@@ -11,10 +11,30 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from configurations import Configuration
+from configurations import values
+import dj_database_url
+from datetime import timedelta
+from rest_framework.settings import api_settings
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
+REST_FRAMEWORK = {
 
+
+'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework.authentication.TokenAuthentication',
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+),
+ 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']}
+SIMPLE_JWT = {
+'AUTH_HEADER_TYPES': ('JWT',),
+'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -25,28 +45,68 @@ SECRET_KEY = 'django-insecure-8gedpd+bu_m+daooga^pllc!kpl=tdli-pkw_82k%=_1a23@#e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',] 
+CORS_ALLOWED_ORIGINS =[
+    'http://localhost:3000',
+    'http://localhost',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1',
+    'http://0.0.0.0',
 
+    
+    
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+    
+    #installed 
+    
+    'viewflow',
+    'viewflow.workflow',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
+    'import_export',
+    'drf_yasg',
+    'corsheaders',
+    'taggit',
+    'drf_fsm',
+    'django_filters',
+    # 'ckeditor',
+    # 'ckeditor_uploader',
+    'phonenumber_field',
+    # 'ckeditor',
+    # 'ckeditor_uploader',
+    'tinymce',
+    'silk',
+    # 'celery_app',
+    'django_prometheus',
 
+    'profile_app',
+    'course_app'
+]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'Academy.urls'
@@ -73,31 +133,46 @@ WSGI_APPLICATION = 'Academy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config('POSTGRES_DB'),
+        'USER': config('POSTGRES_USER'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'HOST': config('POSTGRES_HOST', default='localhost'),
+        'PORT': config('POSTGRES_PORT', default='5432'),
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+PASSWORD_HASHERS = [
+'django.contrib.auth.hashers.Argon2PasswordHasher',
+'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
+
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
 
 
 # Internationalization
@@ -116,8 +191,106 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIR = [os.path.join(BASE_DIR, 'build/static'),]
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Token": {"type": "apiKey", "name": "Authorization",
+        "in": "header"},
+        "Basic": {"type": "basic"},
+    },
+    'DEFAULT_FIELD_INSPECTORS': [
+    'drf_yasg.inspectors.CamelCaseJSONFilter',
+    'drf_yasg.inspectors.InlineSerializerInspector',
+    'drf_yasg.inspectors.RelatedFieldInspector',
+    'drf_yasg.inspectors.ChoiceFieldInspector',
+    'drf_yasg.inspectors.FileFieldInspector',
+    'drf_yasg.inspectors.DictFieldInspector',
+    'drf_yasg.inspectors.SimpleFieldInspector',
+    'drf_yasg.inspectors.StringDefaultFieldInspector',
+],
+"DEFAULT_AUTO_SCHEMA_CLASS":"Academy.SwaggerSchema.CustomAutoSchema"
+}
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_ROOT= os.path.join(BASE_DIR, 'media/')
+MEDIA_URL= "/media/"
+
+# CKEDITOR_UPLOAD_PATH = 'CkUploads/'
+# CKEDITOR_IMAGE_BACKEND = "pillow"
+
+
+
+TINYMCE_DEFAULT_CONFIG = {
+'height': 360,
+'width': 800,
+
+
+'toolbar': 'undo redo | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | removeformat | code | image',
+'image_advtab': True,
+'file_picker_types': 'image',
+'file_picker_callback': 'uploadImage',
+'directionality': 'rtl', 
+'language': 'fa_IR',     
+'content_style': 'body { font-family: Arial, sans-serif; }',  # Adjust font if needed
+
+'cleanup_on_startup': True,
+'custom_undo_redo_levels': 20,
+'selector': 'textarea',
+'theme': 'silver',
+'plugins': '''
+        textcolor save link image media preview codesample contextmenu
+        table code lists fullscreen  insertdatetime  nonbreaking
+        contextmenu directionality searchreplace wordcount visualblocks
+        visualchars code fullscreen autolink lists  charmap 
+        anchor pagebreak
+        ''',
+'toolbar1': '''
+        fullscreen preview bold italic underline | fontselect,
+        fontsizeselect  | forecolor backcolor | alignleft alignright |
+        aligncenter alignjustify | indent outdent | bullist numlist table |
+        | link image media | codesample |
+        ''',
+'toolbar2': '''
+        visualblocks visualchars |
+        charmap hr pagebreak nonbreaking anchor |  code |
+        ''',
+'contextmenu': 'formats | link image',
+'menubar': True,
+'statusbar': True,
+}
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# CELERY_BROKER_URL = os.environ.get("CELERY_BROKER" , "amqp://guest:guest@rabbitmq:5672/")
+# CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND" , "redis://redis:6379/0") 
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+CELERY_BROKER_URL="redis://127.0.0.1:6379/1"
+CELERY_RESULT_BACKEND="redis://127.0.0.1:6379/1"
+# EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+# DEFAULT_FROM_EMAIL = "no-reply@example.com"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'vfayda97@gmail.com'
+EMAIL_HOST_PASSWORD = 'dekn qjfs movk aojv'
