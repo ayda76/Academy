@@ -47,3 +47,11 @@ class CourseAdmin(ImportExportModelAdmin):
 
 
     resource_class = CourseResource
+    
+@admin.register(Term)
+class TermAdmin(ImportExportModelAdmin):
+
+    list_display = ('id', )
+
+
+    resource_class = TermResource
