@@ -38,3 +38,12 @@ class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model=Organization
         fields='__all__'
+        
+class TermSerializer(serializers.ModelSerializer):
+    course_related=CourseSerializer()
+    students=ProfileSerializer(required=False,many=True)
+    class Meta:
+        model=Term
+        fields='__all__'
+        
+    

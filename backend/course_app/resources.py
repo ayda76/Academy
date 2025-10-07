@@ -21,3 +21,8 @@ class LessonResource(resources.ModelResource):
 class CourseResource(resources.ModelResource):
      class Meta:
           model = Course
+
+
+class TermResource(resources.ModelResource):
+     class Meta:
+          model = Term          

@@ -50,3 +50,8 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.select_related('organization').prefetch_related('lessons_related')
     serializer_class = CourseSerializer
     my_tags = ["Course"]
+    
+class TermViewSet(viewsets.ModelViewSet):
+    queryset = Term.objects.select_related('course_related').prefetch_related('students')
+    serializer_class = TermSerializer
+    my_tags = ["Course"]

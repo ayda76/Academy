@@ -8,7 +8,7 @@ router.register("organization", OrganizationViewSet)
 router.register("resource", ResourceViewSet)
 router.register("lesson", LessonViewSet)
 router.register("course", CourseViewSet)
-
+router.register("term", TermViewSet)
 
 
 

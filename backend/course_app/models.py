@@ -36,3 +36,13 @@ class Course(models.Model):
     organization     = models.ForeignKey(Organization,related_name='courses_organization',on_delete=models.CASCADE)
     def __str__(self):
         return self.name
+    
+    
+class Term(models.Model):
+    title          = models.CharField(max_length=800, blank=True, null=True)
+    course_related = models.ForeignKey(Course,related_name='terms',on_delete=models.CASCADE)
+    start_date     = models.DateField(blank=True, null=True)
+    start_date     = models.DateField(blank=True, null=True)
+    students       = models.ManyToManyField(Profile,related_name='terms',blank=True)
+    def __str__(self):
+        return self.title
