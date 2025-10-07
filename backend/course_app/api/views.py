@@ -30,7 +30,7 @@ from rest_framework.generics import ListAPIView , CreateAPIView, UpdateAPIView,D
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class OrganizationViewSet(viewsets.ModelViewSet):
-    queryset = Organization.objects.all()
+    queryset = Organization.objects.prefetch_related('courses_organization')
     serializer_class = OrganizationSerializer
     my_tags = ["Course"]
     
@@ -42,11 +42,11 @@ class ResourceViewSet(viewsets.ModelViewSet):
     
 
 class LessonViewSet(viewsets.ModelViewSet):
-    queryset = Lesson.objects.all()
+    queryset = Lesson.objects.select_related('instructor').prefetch_related('articles','links')
     serializer_class = LessonSerializer
     my_tags = ["Course"]
-    
+
 class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.all()
+    queryset = Course.objects.select_related('organization').prefetch_related('lessons_related')
     serializer_class = CourseSerializer
     my_tags = ["Course"]
