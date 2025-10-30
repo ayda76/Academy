@@ -17,17 +17,19 @@ from django.views.decorators.vary import vary_on_headers, vary_on_cookie
 from django.conf import settings
 from rest_framework import authentication
 from rest_framework import exceptions
-from rest_framework.authentication import get_authorization_header
+
 from django.db.models import Q
-import jwt
-from django.contrib.auth.forms import PasswordChangeForm
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+
 from rest_framework.views import APIView
 
 from drf_yasg.utils import swagger_auto_schema 
 
 from rest_framework.generics import ListAPIView , CreateAPIView, UpdateAPIView,DestroyAPIView
 
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import filters
+from .filters import CourseFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.prefetch_related('courses_organization')
@@ -49,7 +51,21 @@ class LessonViewSet(viewsets.ModelViewSet):
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.select_related('organization').prefetch_related('lessons_related')
     serializer_class = CourseSerializer
+    
+    pagination_class=PageNumberPagination
+    pagination_class.page_size=3
+    
+    filterset_class=CourseFilter
+    filter_backends=[DjangoFilterBackend,
+                    # filters.SearchFilter,
+                    # filters.OrderingFilter,
+                    ]
+    # search_fields=['name', 'price','organization__name']
     my_tags = ["Course"]
+    
+    @method_decorator(cache_page(60 * 15, key_prefix='course_list'))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
     
 class TermViewSet(viewsets.ModelViewSet):
     queryset = Term.objects.select_related('course_related').prefetch_related('students')
