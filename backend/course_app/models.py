@@ -14,11 +14,9 @@ class Organization(models.Model):
     
 
 class Resource(models.Model):
-    file_doc  = models.FileField(upload_to='media/files/% Y/% m/% d/', blank=True, null=True)
+    file_doc  = models.FileField(upload_to="media/files/%Y/%m/%d/", blank=True, null=True)
     link      = models.CharField(max_length=500, blank=True, null=True)
-    
-    def __str__(self):
-        return self.id
+  
     
 class Lesson(models.Model):
     name        = models.CharField(max_length=700, blank=True, null=True)
@@ -34,6 +32,7 @@ class Course(models.Model):
     name             = models.CharField(max_length=800, blank=True, null=True)
     lessons_related  = models.ManyToManyField(Lesson,related_name='courses_lesson')
     organization     = models.ForeignKey(Organization,related_name='courses_organization',on_delete=models.CASCADE)
+    price            = models.DecimalField(max_digits=10,decimal_places=2, default=0)
     def __str__(self):
         return self.name
     
