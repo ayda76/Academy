@@ -1,6 +1,7 @@
 from django.db import models
 from profile_app.models import Profile
 from phonenumber_field.modelfields import PhoneNumberField
+from datetime import datetime, date
 # Create your models here.
 
 
@@ -38,10 +39,26 @@ class Course(models.Model):
     
     
 class Term(models.Model):
-    title          = models.CharField(max_length=800, blank=True, null=True)
-    course_related = models.ForeignKey(Course,related_name='terms',on_delete=models.CASCADE)
-    start_date     = models.DateField(blank=True, null=True)
-    start_date     = models.DateField(blank=True, null=True)
-    students       = models.ManyToManyField(Profile,related_name='terms',blank=True)
+    title                  = models.CharField(max_length=800, blank=True, null=True)
+    course_related         = models.ForeignKey(Course,related_name='terms',on_delete=models.CASCADE)
+    start_date             = models.DateField(blank=True, null=True)
+    finish_date            = models.DateField(blank=True, null=True)
+    students               = models.ManyToManyField(Profile,related_name='terms',blank=True)
+    limit                  = models.PositiveIntegerField(default=0)
+    enroll_start_date      = models.DateField(blank=True, null=True)
+    enroll_finish_date     = models.DateField(blank=True, null=True)
+    
+    @property
+    def has_capacity(self):
+        return self.limit > self.students.count()
+    
+    @property
+    def valid_enroll_time(self):
+        today=date.today()  
+        if self.enroll_start_date and self.enroll_finish_date:
+            return self.enroll_start_date <= today <= self.enroll_finish_date
+        return False
+       
+    
     def __str__(self):
         return self.title
