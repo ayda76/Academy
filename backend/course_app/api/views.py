@@ -30,6 +30,7 @@ from rest_framework.generics import ListAPIView , CreateAPIView, UpdateAPIView,D
 from rest_framework import filters
 from .filters import CourseFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db import transaction
 
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.prefetch_related('courses_organization')
@@ -71,3 +72,22 @@ class TermViewSet(viewsets.ModelViewSet):
     queryset = Term.objects.select_related('course_related').prefetch_related('students')
     serializer_class = TermSerializer
     my_tags = ["Course"]
+    
+    
+class Enroll(CreateAPIView):
+    serializer_class=EnrollTermSerializer
+    my_tags = ["Course"]
+    def post(self, request):
+        profileSelected = Profile.get_user_jwt(self , self.request)
+
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            term_id = serializer.validated_data['term_id']
+        with transaction.atomic():    
+            termSelected=Term.objects.get(id=term_id)
+
+            if termSelected.has_capacity ==True and termSelected.valid_enroll_time ==True and profileSelected not in termSelected.students.all():
+               
+                termSelected.students.add(profileSelected)
+                return 'submited'
+            return  'enroll problem'
