@@ -30,7 +30,11 @@ REST_FRAMEWORK = {
     'rest_framework.authentication.SessionAuthentication',
     'rest_framework_simplejwt.authentication.JWTAuthentication',
 ),
- 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']}
+ 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+  
+ 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+ 'PAGE_SIZE': 3}
+
 SIMPLE_JWT = {
 'AUTH_HEADER_TYPES': ('JWT',),
 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -275,15 +279,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
 
-CELERY_BROKER_URL="redis://127.0.0.1:6379/1"
-CELERY_RESULT_BACKEND="redis://127.0.0.1:6379/1"
+CELERY_BROKER_URL="redis://127.0.0.1:6379/3"
+CELERY_RESULT_BACKEND="redis://127.0.0.1:6379/3"
 # EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 

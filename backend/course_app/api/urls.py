@@ -15,7 +15,8 @@ router.register("term", TermViewSet)
 urlpatterns = [
 
     path("", include(router.urls)),
-    # path('change/password/', PasswordChangeView.as_view()),
+    
+    path('enroll/', Enroll.as_view()),
 
 
 ]
