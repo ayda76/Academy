@@ -1,0 +1,9 @@
+##for setup cache system 
+#first time :docker  run --name redis -p 6379:6379 -d redis
+#then every time for starting redis: docker start redis
+
+##for testing celery first setup redis then celery
+#these 2 comments usually works
+##celery -A academy worker -l info
+###celery -A academy worker -l info -P solo
+
