@@ -32,6 +32,8 @@ from .filters import CourseFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db import transaction
 
+from course_app.tasks import send_confirmation_email_enroll
+
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.prefetch_related('courses_organization')
     serializer_class = OrganizationSerializer
@@ -89,5 +91,7 @@ class Enroll(CreateAPIView):
             if termSelected.has_capacity ==True and termSelected.valid_enroll_time ==True and profileSelected not in termSelected.students.all():
                
                 termSelected.students.add(profileSelected)
+          
+                send_confirmation_email_enroll.delay(termSelected.course_related.id,self.request.user.email)
                 return 'submited'
             return  'enroll problem'
