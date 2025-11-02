@@ -14,5 +14,6 @@ urlpatterns = [
     path('change/password/', PasswordChangeView.as_view()),
     path('SignUp/', RegisterView.as_view(), name='signup'),
     path('Login/', LoginView.as_view(), name='login'),
+    path('ME/', ProfileMeViewSet.as_view(), name='me'),
 
 ]
