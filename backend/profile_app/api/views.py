@@ -74,7 +74,8 @@ class ProfileMeViewSet(generics.ListAPIView):
     
     my_tags = ["Profile"]
     serializer_class = ProfileSerializer
-
+    
+  
     def get(self,request):
         profileSelected = Profile.get_user_jwt( self,request )
  
