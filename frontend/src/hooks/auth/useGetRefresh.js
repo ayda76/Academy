@@ -8,7 +8,7 @@ export default function useGetRefresh() {
     onSuccess:(data)=>console.log(data),
     onError: (err) =>
       {
-        toast.error(err?.response?.data?.message || "مشکلی رخ داده است.")
+        toast.error(err?.response?.data?.detail || "مشکلی رخ داده است.")
         console.log(err);
       }
   });

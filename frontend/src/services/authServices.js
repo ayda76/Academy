@@ -13,5 +13,9 @@ export async function refreshApi(formData) {
 }
 
 export async function userMeApi() {
-  return api.get("/auth/users/me/").then((res) => res?.data);
+  return api.get("/api/profile/ME/").then((res) => res?.data);
+}
+
+export async function completeProfileApi({ id, formData }) {
+  return api.patch(`/api/profile/profile/${id}/`,formData).then((res) => res?.data);
 }

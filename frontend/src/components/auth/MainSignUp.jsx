@@ -1,9 +1,10 @@
+import { Link, Navigate, useNavigate } from "react-router";
+import useUser from "../../hooks/auth/useUser";
 import { useForm } from "react-hook-form";
 import TextField from "../../ui/TextField";
 import PasswordField from "../../ui/PasswordField";
 import SubmitButton from "../../ui/SubmitButton";
 import useSignUp from "../../hooks/auth/useSignUp";
-// import useGetRefresh from "../../hooks/auth/useGetRefresh";
 import Cookies from "js-cookie";
 import { setAccessToken } from "../../services/api";
 
@@ -13,9 +14,13 @@ const MainSignUp = () => {
     formState: { errors },
     handleSubmit,
     watch,
-  } = useForm();
+  } = useForm({
+    mode: "onChange",
+  });
 
+  const { user, isLoadingUser } = useUser();
   const { createUserFn, isCreatingUser } = useSignUp();
+  const navigate = useNavigate();
   //   const { createRefreshFn, isCreatingRefresh } = useGetRefresh();
 
   const onSubmit = (data) => {
@@ -23,18 +28,27 @@ const MainSignUp = () => {
     createUserFn(data, {
       onSuccess: (data) => {
         localStorage.setItem("_appSignging", true);
-        Cookies.set("refresh_token", data.refresh, {
+        Cookies.set("refresh", data.refresh, {
           expires: 7,
           secure: true,
           sameSite: "strict",
         });
         setAccessToken(data?.access);
+        navigate("/auth/complete-profile", { replace: true });
       },
     });
   };
 
+  if (isLoadingUser) return <div>loading...</div>;
+  if (!isLoadingUser && user?.id) return <Navigate to={"/"} replace={true} />;
   return (
-    <form className="space-y-4 w-full" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="space-y-4 w-full px-5 md:max-w-[400px]"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <h3 className="text-purple-700 font-semibold text-sm md:text-base">
+        ثبت‌نام
+      </h3>
       <TextField
         label={"نام کاربری"}
         name={"username"}
@@ -43,9 +57,13 @@ const MainSignUp = () => {
         required
         validationSchema={{
           required: "این فیلد الزامی است.",
+          pattern: {
+            value: /^[A-Za-z][A-Za-z0-9]*(?:[@_$][A-Za-z0-9]+)?$/,
+            message: "فقط حروف انگلیسی و حداقل یکی از حروف @ _ $ مجاز است.",
+          },
         }}
       />
-      <TextField
+      {/* <TextField
         label={"ایمیل"}
         name={"email"}
         errors={errors}
@@ -54,30 +72,41 @@ const MainSignUp = () => {
         validationSchema={{
           required: "این فیلد الزامی است.",
         }}
-      />
+      /> */}
       <PasswordField
-        label={"رمز عبور"}
+        label={"کلمه عبور"}
         name={"password"}
         errors={errors}
         register={register}
         required
         validationSchema={{
           required: "این فیلد الزامی است.",
+          minLength: {
+            value: 8,
+            message: "حداقل 8 کاراکتر مجاز است.",
+          },
         }}
         watch={watch}
       />
       <PasswordField
-        label={"تکرار رمز عبور"}
+        label={"تکرار کلمه عبور"}
         name={"password2"}
         errors={errors}
         register={register}
         required
         validationSchema={{
           required: "این فیلد الزامی است.",
+          validate: (value) =>
+            value === watch("password") || "با کلمه عبور یکسان نیست.",
         }}
         watch={watch}
       />
-      <SubmitButton disabled={isCreatingUser}>ثبت‌نام</SubmitButton>
+      <div className="space-y-2">
+        <SubmitButton disabled={isCreatingUser}>ثبت‌نام</SubmitButton>
+        <Link to={"/auth/signin"} className="text-secondary-700 text-xs">
+          حساب کاربری دارید؟ ورود به حساب کاربری
+        </Link>
+      </div>
     </form>
   );
 };
