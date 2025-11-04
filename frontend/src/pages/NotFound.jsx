@@ -1,0 +1,27 @@
+import { PiArrowRightLight } from "react-icons/pi";
+import useMoveBack from "../hooks/useMoveBack";
+
+function NotFound() {
+  const moveBack = useMoveBack();
+  return (
+    <div className="h-screen bg-secondary-0">
+      <div className="container">
+        <div className="sm:max-w-sm flex justify-center pt-10">
+          <div>
+            <h1 className="text-xl font-bold text-secondary-700 mb-8">
+              صفحه ای که دنبالش بودید، پیدا نشد
+            </h1>
+            <button
+              onClick={moveBack}
+              className="flex items-center gap-x-2 cursor-pointer"
+            >
+              <PiArrowRightLight className="text-primary-900" />
+              <span> بازگشت</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export default NotFound;
