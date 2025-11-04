@@ -2,52 +2,49 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const app = axios.create({
+const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
 });
 
 let accessToken = null;
 console.log(accessToken);
-app.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   if (accessToken) {
-    config.headers.Authorization = accessToken;
+    config.headers["Authorization"] = accessToken;
   }
+  // console.log(api.defaults);
   return config;
-});
+},(err) => Promise.reject(err),);
 
-app.interceptors.response.use(
+api.interceptors.response.use(
   (res) => res,
   async (error) => {
-    if (error.response?.status === 401) {
-      const refresh = Cookies.get("refresh_token");
-
+    const originalConfig = error.config;
+    if (error.response?.status === 401 && !originalConfig._retry) {
+      originalConfig._retry = true;
+      const refresh = Cookies.get("refresh");
+      console.log(refresh);
       if (!refresh) {
-        Cookies.remove("refresh_token");
+        Cookies.remove("refresh");
         localStorage.removeItem("_appSignging");
+        accessToken=null;
         return Promise.reject(error);
       }
 
       try {
-        const refreshResponse = await axios.post(
-          "/auth/jwt/refresh/",
-          { refresh: refresh }, // بدنت
+        const refreshResponse = await api.post(
+          `${BASE_URL}/auth/jwt/refresh/`,
+          { refresh: refresh },
         );
-
         accessToken = refreshResponse.data.access;
-
-        // رفرش جدید رو در کوکی ذخیره کن
-        Cookies.set("refresh_token", refreshResponse.data.refresh, {
-          expires: 7,
-          secure: true,
-          sameSite: "strict",
-        });
         localStorage.setItem("_appSignging", true);
 
-        error.config.headers.Authorization = accessToken;
-        return app(error.config);
+        error.config.headers["Authorization"] = accessToken;
+        return api(error.config);
       } catch (err) {
-        Cookies.remove("refresh_token");
+        console.log(err);
+        Cookies.remove("refresh");
         localStorage.removeItem("_appSignging");
         accessToken = null;
         return Promise.reject(err);
@@ -59,15 +56,9 @@ app.interceptors.response.use(
 );
 
 export function setAccessToken(token) {
+  console.log("token", token);
   accessToken = token;
 }
 
-const api = {
-  get: app.get,
-  post: app.post,
-  put: app.put,
-  patch: app.patch,
-  delete: app.delete,
-};
 
 export default api;
