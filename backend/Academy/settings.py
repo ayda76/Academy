@@ -98,7 +98,9 @@ INSTALLED_APPS = [
     'django_prometheus',
 
     'profile_app',
-    'course_app'
+    'course_app',
+    'comment_app',
+    # 'notification_app'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

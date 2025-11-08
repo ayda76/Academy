@@ -31,6 +31,7 @@ from rest_framework import filters
 from .filters import CourseFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db import transaction
+from functools import partial
 
 from course_app.tasks import send_confirmation_email_enroll
 
@@ -86,12 +87,18 @@ class Enroll(CreateAPIView):
         if serializer.is_valid():
             term_id = serializer.validated_data['term_id']
         with transaction.atomic():    
-            termSelected=Term.objects.get(id=term_id)
+            termSelected=Term.objects.select_for_update().get(id=term_id)
 
             if termSelected.has_capacity ==True and termSelected.valid_enroll_time ==True and profileSelected not in termSelected.students.all():
                
                 termSelected.students.add(profileSelected)
-          
-                send_confirmation_email_enroll.delay(termSelected.course_related.id,self.request.user.email)
+                transaction.on_commit(partial(send_confirmation_email_enroll.delay,course_id=termSelected.course_related.id,user_email=self.request.user.email))
+                # transaction.on_commit(
+                # lambda: send_confirmation_email_enroll.delay(
+                #  course_id=termSelected.course_related.id,
+                # user_email=self.request.user.email
+                # )
+                #)
+                # send_confirmation_email_enroll.delay(termSelected.course_related.id,self.request.user.email)
                 return 'submited'
             return  'enroll problem'
