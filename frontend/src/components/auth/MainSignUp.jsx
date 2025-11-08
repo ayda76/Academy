@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import useUser from "../../hooks/auth/useUser";
 import { useForm } from "react-hook-form";
 import TextField from "../../ui/TextField";
@@ -7,8 +7,10 @@ import SubmitButton from "../../ui/SubmitButton";
 import useSignUp from "../../hooks/auth/useSignUp";
 import Cookies from "js-cookie";
 import { setAccessToken } from "../../services/api";
+import Loading from "../../ui/Loading";
 
 const MainSignUp = () => {
+  const appSignging = localStorage.getItem("_appSignging") || false;
   const {
     register,
     formState: { errors },
@@ -39,12 +41,15 @@ const MainSignUp = () => {
     });
   };
 
-  if (isLoadingUser) return <div>loading...</div>;
-  if (!isLoadingUser && user?.id) return <Navigate to={"/"} replace={true} />;
-  return (
+  return isLoadingUser ? (
+    <Loading />
+  ) : user?.id ? (
+    <Navigate to={"/"} replace={true} />
+  ) : (
     <form
       className="space-y-4 w-full px-5 md:max-w-[400px]"
       onSubmit={handleSubmit(onSubmit)}
+      autoComplete="off"
     >
       <h3 className="text-purple-700 font-semibold text-sm md:text-base">
         ثبت‌نام
@@ -62,6 +67,7 @@ const MainSignUp = () => {
             message: "فقط حروف انگلیسی و حداقل یکی از حروف @ _ $ مجاز است.",
           },
         }}
+        autoComplete="new-username"
       />
       {/* <TextField
         label={"ایمیل"}
@@ -87,6 +93,7 @@ const MainSignUp = () => {
           },
         }}
         watch={watch}
+        autoComplete={"new-password"}
       />
       <PasswordField
         label={"تکرار کلمه عبور"}

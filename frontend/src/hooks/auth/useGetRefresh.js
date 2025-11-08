@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export default function useGetRefresh() {
   const { mutate: createRefreshFn, isPending: isCreatingRefresh } = useMutation({
     mutationFn: createJWTApi,
-    onSuccess:(data)=>console.log(data),
+    // onSuccess:(data)=>console.log(data),
     onError: (err) =>
       {
         toast.error(err?.response?.data?.detail || "مشکلی رخ داده است.")
