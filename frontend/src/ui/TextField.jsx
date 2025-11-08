@@ -7,6 +7,7 @@ const TextField = ({
   required,
   errors,
   inputMode = "",
+  autoComplete = "off",
 }) => {
   return (
     <div>
@@ -18,7 +19,7 @@ const TextField = ({
         id={name}
         className="border border-secondary-400 p-1.5 w-full text-sm rounded-md outline-none focus:shadow-sm bg-secondary-50"
         type={type}
-        autoComplete="off"
+        autoComplete={autoComplete}
         inputMode={inputMode}
       />
       {errors && errors[name] && (

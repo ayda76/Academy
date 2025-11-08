@@ -1,15 +1,30 @@
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
 import useUser from "../../hooks/auth/useUser";
 import DashboardPanelLayout from "../../layout/DashboardPanelLayout";
+import { useEffect } from "react";
+import Loading from "../../ui/Loading";
 
 const DashboardPage = () => {
-  const { user, isLoadingUser } = useUser();
-  console.log(user);
-  if (isLoadingUser) return <div>loading</div>;
-  if (!isLoadingUser && !user?.id) return <Navigate to={"/auth"} />;
-  if (!isLoadingUser && !user?.firstname)
-    return <Navigate to={"/auth/complete-profile"} />;
-  return <DashboardPanelLayout></DashboardPanelLayout>;
+  const navigate = useNavigate();
+  const appSignging = localStorage.getItem("_appSignging") || false;
+  const { user, isLoadingUser, isPending } = useUser();
+  console.log(user, isLoadingUser);
+  useEffect(() => {
+    if (isPending) return;
+    if (!appSignging) {
+      navigate("/auth", { replace: true });
+      return;
+    }
+    if (!user?.firstname) {
+      navigate("/auth/complete-profile", { replace: true });
+      return;
+    }
+  }, [isPending, appSignging, user]);
+  if (isPending) return <Loading />;
+
+  return (
+    !isPending && appSignging && <DashboardPanelLayout></DashboardPanelLayout>
+  );
 };
 
 export default DashboardPage;
