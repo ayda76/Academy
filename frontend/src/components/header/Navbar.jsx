@@ -16,7 +16,7 @@ const Navbar = () => {
         <NavLink path={"/courses"} title={"دوره‌ها"} icon={<PiBooksLight />} />
         <NavLink path={"/aboutus"} title={"درباره ما"} icon={<PiInfo />} />
         <NavLink
-          path={"/aboutus"}
+          path={"/cart"}
           title={"سبد خرید"}
           icon={<PiShoppingCartSimpleLight />}
         />

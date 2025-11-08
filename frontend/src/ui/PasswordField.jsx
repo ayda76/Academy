@@ -9,6 +9,7 @@ const PasswordField = ({
   required,
   errors,
   watch,
+  autoComplete = "off",
 }) => {
   const [type, setType] = useState("password");
   return (
@@ -22,13 +23,14 @@ const PasswordField = ({
           id={name}
           className="border border-secondary-400 p-1.5 w-full text-sm rounded-md outline-none focus:shadow-sm bg-secondary-50"
           type={type}
-          autoComplete="off"
+          autoComplete={autoComplete}
           onCopy={(e) => e.preventDefault()}
           onCut={(e) => e.preventDefault()}
         />
         {watch(name) && (
           <button
             type="button"
+            tabIndex={-1}
             onClick={() => setType(type === "password" ? "text" : "password")}
             className="absolute top-1/2 -translate-y-1/2 left-2 text-lg cursor-pointer"
           >

@@ -6,10 +6,11 @@ export default function useCompleteProfile() {
   const querClient = useQueryClient();
   const { mutate: completeUser, isPending: isCreating } = useMutation({
     mutationFn: completeProfileApi,
-    onSuccess: () =>
+    onSuccess: () => {
       querClient.invalidateQueries({
         queryKey: ["user-me"],
-      }),
+      });
+    },
     onError: (err) => {
       toast.error(err?.response?.data?.detail || "مشکلی رخ داده است.");
       console.log(err);

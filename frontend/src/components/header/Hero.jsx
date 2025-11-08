@@ -13,7 +13,7 @@ const Hero = () => {
         <h1 className="text-lg font-semibold text-purple-800">
           آموزش آنلاین، ساده‌تر از همیشه
         </h1>
-        <p className="text-sm leading-7 text-secondary-600 md:pb-6 text-center md:text-right">
+        <p className="text-sm leading-7 text-secondary-600 px-5 md:px-0 md:pb-6 text-center md:text-right">
           دوره‌های تخصصی و پروژه محور، با مسیر یادگیری مشخص و پشتیبانی مداوم.{" "}
           <br />
           به سطح بعدی مهارتت خوش اومدی.

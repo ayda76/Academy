@@ -1,14 +1,16 @@
 import useUser from "../../hooks/auth/useUser";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import TextField from "../../ui/TextField";
 import PasswordField from "../../ui/PasswordField";
 import useGetRefresh from "../../hooks/auth/useGetRefresh";
 import { setAccessToken } from "../../services/api";
 import SubmitButton from "../../ui/SubmitButton";
+import Loading from "../../ui/Loading";
 
 const MainSignIn = () => {
+  const appSignging = localStorage.getItem("_appSignging") || false;
   const {
     register,
     formState: { errors },
@@ -34,10 +36,16 @@ const MainSignIn = () => {
       },
     });
   };
-  if (isLoadingUser) return <div>loading...</div>;
-  if (!isLoadingUser && user?.id) return <Navigate to={"/"} replace={true} />;
-  return (
-    <form className="space-y-4 w-full px-5 md:max-w-[400px]" onSubmit={handleSubmit(onSubmit)}>
+
+  return isLoadingUser ? (
+    <Loading />
+  ) : user?.id ? (
+    <Navigate to={"/"} replace={true} />
+  ) : (
+    <form
+      className="space-y-4 w-full px-5 md:max-w-[400px]"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <h3 className="text-purple-700 font-semibold text-sm md:text-base">
         ورود
       </h3>
@@ -49,9 +57,9 @@ const MainSignIn = () => {
         required
         validationSchema={{
           required: "این فیلد الزامی است.",
-          minLength: {
-            value: 4,
-            message: "نام کاربری پروژه باید بیشتر از 4 کاراکتر باشد.",
+          pattern: {
+            value: /^[A-Za-z][A-Za-z0-9]*(?:[@_$][A-Za-z0-9]+)?$/,
+            message: "فقط حروف انگلیسی و حداقل یکی از حروف @ _ $ مجاز است.",
           },
         }}
       />
