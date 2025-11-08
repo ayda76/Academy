@@ -6,14 +6,6 @@ from import_export.admin import ImportExportModelAdmin
 from .models import *
 
 
-Organization
-Resource
-Lesson
-Course
-
-
-
-
 @admin.register(Organization)
 class OrganizationAdmin(ImportExportModelAdmin):
 
