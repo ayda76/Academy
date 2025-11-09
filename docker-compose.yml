@@ -1,0 +1,119 @@
+version: "3.9"
+
+services:
+  # =====================
+  # PostgreSQL
+  # =====================
+  db:
+    image: postgres:17
+    container_name: academy-db
+    restart: always
+    env_file:
+      - ./backend/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+      - ./db_dump.sql:/docker-entrypoint-initdb.d/db_dump.sql
+    ports:
+      - "5432:5432"
+
+  # =====================
+  # Redis
+  # =====================
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # =====================
+  # Django Backend
+  # =====================
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    command: >
+      sh -c "
+      python manage.py migrate --noinput &&
+      python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+
+  # =====================
+  # Celery Worker
+  # =====================
+  celery:
+    container_name: celery_worker
+    build:
+      context: ./backend
+    command: celery -A Academy worker --loglevel=info
+    volumes:
+      - ./backend:/backend
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - redis
+      - db
+
+  # =====================
+  # Celery Beat
+  # =====================
+  # celery_beat:
+  #   container_name: celery_beat
+  #   build:
+  #     context: ./backend
+  #   command: celery -A Academy beat --loglevel=info
+  #   volumes:
+  #     - ./backend:/backend
+  #   env_file:
+  #     - ./backend/.env
+  #   depends_on:
+  #     - redis
+  #     - db
+
+  # =====================
+  # Flower (Celery Monitor)
+  # =====================
+  # flower:
+  #   image: mher/flower
+  #   container_name: flower
+  #   ports:
+  #     - "5555:5555"
+  #   environment:
+  #     - FLOWER_PORT=5555
+  #     - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+  #   depends_on:
+  #     - redis
+  #     - celery
+
+  # =====================
+  # Frontend (Next.js / Vite)
+  # =====================
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    command: npm run dev -- --host
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

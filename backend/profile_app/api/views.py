@@ -44,6 +44,7 @@ class RegisterView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             tokens = get_tokens_for_user(user)  # Generate JWT tokens for user
+            Profile.objects.get_or_create(user=user)  # create profile
             return Response(tokens, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -77,10 +78,15 @@ class ProfileMeViewSet(generics.ListAPIView):
     
   
     def get(self,request):
+        
         profileSelected = Profile.get_user_jwt( self,request )
+        print(f"profile selected::{profileSelected}")
  
         serializer = ProfileSerializer(profileSelected)
         return Response(serializer.data)
+        
+
+            
     
 class PasswordChangeView(APIView):
     my_tags = ["Profile"]
