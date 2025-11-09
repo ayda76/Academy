@@ -1,9 +1,9 @@
-##for setup cache system 
-#first time :docker  run --name redis -p 6379:6379 -d redis
-#then every time for starting redis: docker start redis
+##to start
+#login to your docker account 
+#put the db_dump.sql file and .env (backend)file in the same root that docker-compose file exists.
+#put .env files for backend and frontend
+# then go to docker-compose dir 
+# docker-compose up --build
 
-##for testing celery first setup redis then celery
-#these 2 comments usually works
-##celery -A academy worker -l info
-###celery -A academy worker -l info -P solo
-
+#if you want to write some command in backend container: docker-compose exec backend sh 
+#if you want to write commands in frontend container: docker-compose exec frontend sh 
