@@ -13,7 +13,8 @@ class Profile(models.Model):
     firstname  = models.CharField(max_length=200, blank=True, null=True)
     lastname   = models.CharField(max_length=200, blank=True, null=True)
     email      = models.EmailField()
-    phone      = PhoneNumberField(blank=True)
+    phone      = models.DecimalField(blank=True , null=True, max_digits=11, decimal_places=0)
+   
     address    = models.TextField(blank=True, null=True)
     
     def __str__(self) :
@@ -28,4 +29,5 @@ class Profile(models.Model):
         decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
         
         username = decoded['user_id']
+        print(f"ccc{username}")
         return Profile.objects.get(user__id=username)    
