@@ -49,35 +49,60 @@ services:
       - redis
 
   # =====================
+  # Celery Worker
+  # =====================
+  celery:
+    container_name: celery_worker
+    build:
+      context: ./backend
+    working_dir: /backend
+    command: sh -c "cd /backend && celery -A Academy worker --loglevel=info"
+    volumes:
+      - ./backend:/backend
+    env_file:
+      - ./backend/.env
+
+    environment:
+      - DJANGO_SETTINGS_MODULE=Academy.settings
+      - PYTHONPATH=/backend
+    depends_on:
+      - redis
+      - db
+  # =====================
   # Celery Beat
   # =====================
-  # celery_beat:
-  #   container_name: celery_beat
-  #   build:
-  #     context: ./backend
-  #   command: celery -A Academy beat --loglevel=info
-  #   volumes:
-  #     - ./backend:/backend
-  #   env_file:
-  #     - ./backend/.env
-  #   depends_on:
-  #     - redis
-  #     - db
+  celery_beat:
+    container_name: celery_beat
+    build:
+      context: ./backend
+    working_dir: /backend
+    command: sh -c "cd /backend &&  celery -A Academy beat --loglevel=info"
+    volumes:
+      - ./backend:/backend
+    env_file:
+      - ./backend/.env
+
+    environment:
+      - DJANGO_SETTINGS_MODULE=Academy.settings
+      - PYTHONPATH=/backend
+    depends_on:
+      - redis
+      - db
 
   # =====================
   # Flower (Celery Monitor)
   # =====================
-  # flower:
-  #   image: mher/flower
-  #   container_name: flower
-  #   ports:
-  #     - "5555:5555"
-  #   environment:
-  #     - FLOWER_PORT=5555
-  #     - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-  #   depends_on:
-  #     - redis
-  #     - celery
+  flower:
+    image: mher/flower
+    container_name: flower
+    ports:
+      - "5555:5555"
+    environment:
+      - FLOWER_PORT=5555
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+    depends_on:
+      - redis
+      - celery
 
   # =====================
   # Frontend (Next.js / Vite)
@@ -98,22 +123,6 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
-
-  # =====================
-  # Celery Worker
-  # =====================
-  celery:
-    container_name: celery_worker
-    build:
-      context: ./backend
-    command: celery -A Academy worker --loglevel=info
-    volumes:
-      - ./backend:/backend
-    env_file:
-      - ./backend/.env
-    depends_on:
-      - redis
-      - db
 
 volumes:
   pgdata:
