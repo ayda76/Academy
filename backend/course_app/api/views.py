@@ -13,10 +13,7 @@ from course_app.models import *
 from rest_framework import generics
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.views.decorators.vary import vary_on_headers, vary_on_cookie
-from django.conf import settings
-from rest_framework import authentication
-from rest_framework import exceptions
+
 
 from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
@@ -32,8 +29,11 @@ from .filters import CourseFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db import transaction
 from functools import partial
-
+from django.contrib.contenttypes.models import ContentType
 from course_app.tasks import send_confirmation_email_enroll
+from comment_app.models import Comment
+from comment_app.api.serializers import *
+from rest_framework.decorators import action
 
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.prefetch_related('courses_organization')
@@ -74,6 +74,19 @@ class CourseViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
     
+    @action(detail=True, methods=['get'])
+    def EachCourseComments(self, request, pk=None):
+        try:
+            content_type = ContentType.objects.get(app_label="course_app", model="course")
+            comments=Comment.objects.filter(content_type=content_type,object_id=pk)
+            serialized_comments=CommentSimpleSerializer(comments, many=True).data
+            
+            return Response(serialized_comments)
+        except:
+            return Response('error')
+
+ 
+    
 class TermViewSet(viewsets.ModelViewSet):
     queryset = Term.objects.select_related('course_related').prefetch_related('students')
     serializer_class = TermSerializer
@@ -106,3 +119,5 @@ class Enroll(CreateAPIView):
                 # send_confirmation_email_enroll.delay(termSelected.course_related.id,self.request.user.email)
                 return 'submited'
             return  'enroll problem'
+        
+        

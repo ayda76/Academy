@@ -113,6 +113,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
+    'Academy.middleware.RequestMiddleware',
 ]
 
 ROOT_URLCONF = 'Academy.urls'
