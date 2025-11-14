@@ -38,18 +38,21 @@ from course_app.tasks import send_confirmation_email_enroll
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.prefetch_related('courses_organization')
     serializer_class = OrganizationSerializer
+    pagination_class=None
     my_tags = ["Course"]
     
     
 class ResourceViewSet(viewsets.ModelViewSet):
     queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
+    pagination_class=None
     my_tags = ["Course"]
     
 
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.select_related('instructor').prefetch_related('articles','links')
     serializer_class = LessonSerializer
+    pagination_class=None
     my_tags = ["Course"]
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -74,6 +77,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 class TermViewSet(viewsets.ModelViewSet):
     queryset = Term.objects.select_related('course_related').prefetch_related('students')
     serializer_class = TermSerializer
+    pagination_class=None
     my_tags = ["Course"]
     
     

@@ -69,12 +69,14 @@ class LoginView(APIView):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    pagination_class=None
     my_tags = ["Profile"]
 
 class ProfileMeViewSet(generics.ListAPIView):
     
     my_tags = ["Profile"]
     serializer_class = ProfileSerializer
+    pagination_class=None
     
   
     def get(self,request):
