@@ -22,7 +22,7 @@ class GenericRelatedModelSerializer(serializers.RelatedField):
 
 class CommentSerializer(serializers.ModelSerializer):
     content_type = GenericRelatedModelSerializer(queryset=ContentType.objects.all())
-    profile_related=ProfileSerializer(read_only=True)
+    
     class Meta:
         model  = Comment
         fields = '__all__'   
