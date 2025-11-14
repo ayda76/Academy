@@ -113,6 +113,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
+    'Academy.middleware.RequestMiddleware',
 ]
 
 ROOT_URLCONF = 'Academy.urls'
@@ -288,8 +289,8 @@ CACHES = {
     }
 }
 
-CELERY_BROKER_URL="redis://127.0.0.1:6379/3"
-CELERY_RESULT_BACKEND="redis://127.0.0.1:6379/3"
+CELERY_BROKER_URL="redis://redis:6379/3"
+CELERY_RESULT_BACKEND="redis://redis:6379/3"
 # EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 

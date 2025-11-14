@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/profile/", include("profile_app.api.urls")),
     path("api/course/", include("course_app.api.urls")),
-   
+    path("api/comment/", include("comment_app.api.urls")),
     
     path('auth/', include('djoser.urls')),
     path("auth/", include('djoser.urls.jwt')),

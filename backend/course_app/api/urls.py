@@ -18,5 +18,4 @@ urlpatterns = [
     
     path('enroll/', Enroll.as_view()),
 
-
 ]
