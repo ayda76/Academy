@@ -26,8 +26,9 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.generics import ListAPIView , CreateAPIView, UpdateAPIView,DestroyAPIView
 
 from rest_framework_simplejwt.tokens import RefreshToken
-
-
+from rest_framework.decorators import action
+from course_app.api.serializers import CourseSerializer
+from comment_app.api.serializers import CommentSerializer
 # Helper function to generate JWT token
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -71,6 +72,30 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     pagination_class=None
     my_tags = ["Profile"]
+    
+    @action(detail=True, methods=['get'])
+    def CoursesMe(self, request, pk=None):
+        from course_app.models import Term
+        try:
+            profileSelected=Profile.objects.get(id=pk)
+            courses=Term.objects.filter(students=profileSelected).values('course_related')
+            serialized_courses=CourseSerializer(courses,many=True).data
+            return Response(serialized_courses)
+        except:
+            return Response('error')
+        
+    @action(detail=True, methods=['get'])
+    def CommentsMe(self, request, pk=None):
+        from comment_app.models import Comment
+        try:
+            profileSelected=Profile.objects.get(id=pk)
+            print(f"profileeee{profileSelected}")
+            comments=Comment.objects.filter(profile_related=profileSelected)
+            print(f"comm{comments}")
+            serialized_comments=CommentSerializer(comments,many=True).data
+            return Response(serialized_comments)
+        except:
+            return Response('error')
 
 class ProfileMeViewSet(generics.ListAPIView):
     

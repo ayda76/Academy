@@ -84,7 +84,8 @@ class CourseViewSet(viewsets.ModelViewSet):
             return Response(serialized_comments)
         except:
             return Response('error')
-
+    
+    
  
     
 class TermViewSet(viewsets.ModelViewSet):
