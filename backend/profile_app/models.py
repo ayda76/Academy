@@ -14,6 +14,7 @@ class Profile(models.Model):
     lastname   = models.CharField(max_length=200, blank=True, null=True)
     email      = models.EmailField()
     phone      = models.DecimalField(blank=True , null=True, max_digits=11, decimal_places=0)
+
    
     address    = models.TextField(blank=True, null=True)
     
