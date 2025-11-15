@@ -40,6 +40,11 @@ class OrganizationSerializer(serializers.ModelSerializer):
         model=Organization
         fields='__all__'
         
+class TermSimpleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Term
+        fields='__all__'
 class TermSerializer(serializers.ModelSerializer):
     course_related=CourseSerializer(read_only=True)
     students=ProfileSerializer(required=False,read_only=True,many=True)
