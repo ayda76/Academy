@@ -12,17 +12,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     pagination_class=None
     my_tags = ["Comment"]
-    def perform_create(self, serializer):
-        try:
-            profileSelected = Profile.get_user_jwt(self , self.request)
-            
-            instance=serializer.save()
-            
-            instance.profile_related=profileSelected
-            instance.save()
-            return instance
-        except:
-            return Response('no profile')
+
     
     
     
