@@ -89,9 +89,9 @@ services:
       - redis
       - db
 
-  # =====================
-  # Flower (Celery Monitor)
-  # =====================
+  # # =====================
+  # # Flower (Celery Monitor)
+  # # =====================
   flower:
     image: mher/flower
     container_name: flower

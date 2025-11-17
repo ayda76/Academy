@@ -14,6 +14,7 @@ export default function useUser() {
     staleTime: 5 * 60 * 1000,
     refetchOnMount:false,
     enabled: !!appSignging,
+    throwOnError:(err)=>console.log(err)
   });
   return { user, isLoadingUser, isPending };
 }
