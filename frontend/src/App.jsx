@@ -10,6 +10,8 @@ import UserPage from "./pages/dashboard/UserPage";
 import CompleteProfilePage from "./pages/auth/CompleteProfilePage";
 import NotFound from "./pages/NotFound";
 import AboutusPage from "./pages/aboutus/AboutusPage";
+import CoursesPage from "./pages/courses/CoursesPage";
+import CourseProfilePage from "./pages/courses/CourseProfilePage";
 function App() {
   const queryClient = new QueryClient();
   // useEffect(() => {
@@ -37,6 +39,9 @@ function App() {
         <Route path="dashboard" element={<DashboardPage />}>
           <Route index element={<Navigate to={"user"} replace />} />
           <Route path="user" element={<UserPage />} />
+        </Route>
+        <Route path="courses" element={<CoursesPage />}>
+          <Route path=":id" element={<CourseProfilePage />} />
         </Route>
         <Route path="aboutus" element={<AboutusPage />} />
         <Route path="*" element={<NotFound />} />
