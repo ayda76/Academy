@@ -12,7 +12,7 @@ const Header = () => {
   console.log(isLoadingUser);
   return (
     <header
-      className={`${isLoadingUser && "blur-sm"} sticky inset-0 p-2.5 px-6 shadow-md flex items-center justify-between bg-secondary-50`}
+      className={`${isLoadingUser && "blur-sm"} sticky z-40 inset-0 p-2.5 px-6 shadow-md flex items-center justify-between bg-secondary-50`}
     >
       <PiList className="flex md:hidden" onClick={() => setOpen(true)} />
       <Link to="/" className="text-purple-800 font-semibold">
