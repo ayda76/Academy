@@ -9,6 +9,10 @@ WORKDIR /app
 # Copy dependency files first (better cache)
 COPY package*.json ./
 
+RUN npm config set registry https://registry.npmmirror.com
+
+RUN npm cache clean --force
+
 # Install dependencies
 RUN npm install
 
