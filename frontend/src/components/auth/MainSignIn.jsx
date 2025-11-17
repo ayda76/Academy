@@ -27,7 +27,7 @@ const MainSignIn = () => {
       onSuccess: (data) => {
         localStorage.setItem("_appSignging", true);
         Cookies.set("refresh", data.refresh, {
-          expires: 7,
+          expires: 1,
           secure: true,
           sameSite: "strict",
         });
