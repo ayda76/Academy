@@ -42,13 +42,14 @@ const SearchBox = ({ params, setParams }) => {
     }
   }, [search, setSearch, searchQuery, setParams]);
   return (
-    <div className="w-[250px] mb-6 mx-auto md:mx-0 relative">
+    <div className="w-[180px] md:w-[245px] mx-0 relative">
       <PiMagnifyingGlassBold className="absolute -translate-y-1/2 top-1/2 right-2 text-secondary-300 text-xl" />
       <input
-        className="w-full border focus:outline-none border-secondary-300 rounded-full pr-8 py-2.5 text-xs 2xl:text-sm"
+        className="w-full border focus:outline-none border-secondary-300 rounded-full pr-8 py-1.5 md:py-2.5 text-xs 2xl:text-sm"
         placeholder="جستجو"
         // type="search"
         onKeyDown={result}
+        enterKeyHint="Enter"
         ref={ref}
       />
       <PiX

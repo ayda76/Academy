@@ -1,6 +1,9 @@
 import api from "./api";
 
 export async function getCoursesApi(params) {
-    console.log("p",params);
   return api.get("/api/course/course/", { params }).then((res) => res?.data);
+}
+
+export async function getCourseDetailsApi(id) {
+  return api.get(`/api/course/course/${id}/`).then((res) => res?.data);
 }
