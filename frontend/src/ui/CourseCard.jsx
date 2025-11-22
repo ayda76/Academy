@@ -5,7 +5,7 @@ const CourseCard = ({ course }) => {
     <main className="w-full max-w-[250px] mx-auto">
       <Link to={`/courses/${course?.id}`}>
         <div className="rounded-xl flex flex-col gap-2 border border-gray-200 bg-secondary-50/30 p-3 shadow-sm hover:shadow-md transition">
-          {/* عکس کوچک‌تر */}
+          {/* عکس */}
           <div className="w-full aspect-9/5 overflow-hidden rounded-md bg-gray-100">
             <img
               src={course?.image || "/assets/images/course/not-found.jpg"}
@@ -25,7 +25,7 @@ const CourseCard = ({ course }) => {
           </span>
           <div className="border-t border-gray-200 pt-3">
             <strong className="text-sm font-semibold text-secondary-700">
-              {course?.price} تومان
+              {+course?.price} تومان
             </strong>
           </div>
         </div>

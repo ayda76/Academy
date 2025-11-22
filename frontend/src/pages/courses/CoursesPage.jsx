@@ -8,7 +8,7 @@ const CoursesPage = () => {
   return (
     <>
       <Header />
-      <div className="py-8">{id ? <Outlet /> : <MainCoursesList />}</div>
+      <div>{id ? <Outlet /> : <MainCoursesList />}</div>
       <Footer />
     </>
   );

@@ -1,6 +1,6 @@
 import useUser from "../../hooks/auth/useUser";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import TextField from "../../ui/TextField";
 import PasswordField from "../../ui/PasswordField";
@@ -11,6 +11,9 @@ import Loading from "../../ui/Loading";
 
 const MainSignIn = () => {
   const appSignging = localStorage.getItem("_appSignging") || false;
+  const location = useLocation();
+  const from = location.state?.from;
+  
   const {
     register,
     formState: { errors },
@@ -32,7 +35,8 @@ const MainSignIn = () => {
           sameSite: "strict",
         });
         setAccessToken(data?.access);
-        navigate("/dashboard", { replace: true });
+        const path = from || "/dashboard";
+        navigate(path, { replace: true });
       },
     });
   };
@@ -76,7 +80,11 @@ const MainSignIn = () => {
       />
       <div className="space-y-2">
         <SubmitButton disabled={isCreatingRefresh}>ورود</SubmitButton>
-        <Link to={"/auth/signup"} className="text-secondary-700 text-xs">
+        <Link
+          to={"/auth/signup"}
+          state={{ from: location.pathname }}
+          className="text-secondary-700 text-xs"
+        >
           حساب کاربری ندارید؟ ایجاد حساب کاربری
         </Link>
       </div>

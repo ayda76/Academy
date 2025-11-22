@@ -1,12 +1,11 @@
-import { useState } from "react";
-
-export default function PriceRangeSlider() {
-  const MIN = 0;
-  const MAX = 5000000;
-
-  const [minValue, setMinValue] = useState(MIN);
-  const [maxValue, setMaxValue] = useState(MAX);
-
+export default function PriceRangeSlider({
+  MIN,
+  MAX,
+  minValue,
+  setMinValue,
+  maxValue,
+  setMaxValue,
+}) {
   // جلوگیری از رد شدن دسته‌ها از هم
   const handleMinChange = (e) => {
     const value = Number(e.target.value);
@@ -23,12 +22,14 @@ export default function PriceRangeSlider() {
   const maxPercent = ((maxValue - MIN) / (MAX - MIN)) * 100;
 
   return (
-    <div className="w-full max-w-lg mx-auto">
+    <div className="w-full mx-auto">
       {/* نمایش قیمت‌ها */}
-      <span className="text-xs text-gray-700 inline-block mb-4">براساس هزینه</span>
+      {/* <span className="text-sm text-gray-900 inline-block mb-4">براساس هزینه</span> */}
       <div className="flex justify-between mb-4 text-xs font-semibold">
-        <span>{minValue.toLocaleString()} تومان</span>
-        <span>{maxValue.toLocaleString()} تومان</span>
+        <span>
+          {minValue === 0 ? "رایگان" : `${minValue?.toLocaleString()} تومان`}
+        </span>
+        <span>{maxValue?.toLocaleString()} تومان</span>
       </div>
 
       <div className="relative w-full h-4">

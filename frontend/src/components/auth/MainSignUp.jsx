@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import useUser from "../../hooks/auth/useUser";
 import { useForm } from "react-hook-form";
 import TextField from "../../ui/TextField";
@@ -11,6 +11,7 @@ import Loading from "../../ui/Loading";
 
 const MainSignUp = () => {
   const appSignging = localStorage.getItem("_appSignging") || false;
+  const location = useLocation();
   const {
     register,
     formState: { errors },
@@ -110,7 +111,11 @@ const MainSignUp = () => {
       />
       <div className="space-y-2">
         <SubmitButton disabled={isCreatingUser}>ثبت‌نام</SubmitButton>
-        <Link to={"/auth/signin"} className="text-secondary-700 text-xs">
+        <Link
+          to={"/auth/signin"}
+          state={{ from: location.pathname }}
+          className="text-secondary-700 text-xs"
+        >
           حساب کاربری دارید؟ ورود به حساب کاربری
         </Link>
       </div>

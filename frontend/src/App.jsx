@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import AboutusPage from "./pages/aboutus/AboutusPage";
 import CoursesPage from "./pages/courses/CoursesPage";
 import CourseProfilePage from "./pages/courses/CourseProfilePage";
+import CartPage from "./pages/cart/CartPage";
 function App() {
   const queryClient = new QueryClient();
   // useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
           <Route path=":id" element={<CourseProfilePage />} />
         </Route>
         <Route path="aboutus" element={<AboutusPage />} />
+        <Route path="cart" element={<CartPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>
