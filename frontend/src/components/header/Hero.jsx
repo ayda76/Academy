@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -19,7 +19,7 @@ const Hero = () => {
           به سطح بعدی مهارتت خوش اومدی.
         </p>
         <Link
-          to={"/auth/signin"}
+          to={"/courses"}
           className="bg-purple-800 border border-purple-800 text-white hover:bg-white hover:text-purple-800 hover:shadow-md p-1.5 px-5 text-sm rounded-lg text-center"
         >
           شروع یادگیری

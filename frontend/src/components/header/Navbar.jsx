@@ -15,11 +15,11 @@ const Navbar = () => {
         <NavLink path={"/"} title={"صفحه اصلی"} icon={<PiHouseLight />} />
         <NavLink path={"/courses"} title={"دوره‌ها"} icon={<PiBooksLight />} />
         <NavLink path={"/aboutus"} title={"درباره ما"} icon={<PiInfo />} />
-        <NavLink
+        {/* <NavLink
           path={"/cart"}
           title={"سبد خرید"}
           icon={<PiShoppingCartSimpleLight />}
-        />
+        /> */}
       </ul>
     </nav>
   );
