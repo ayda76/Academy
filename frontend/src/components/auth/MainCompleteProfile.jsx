@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useUser from "../../hooks/auth/useUser";
 import TextField from "../../ui/TextField";
@@ -8,7 +8,10 @@ import toast from "react-hot-toast";
 import Loading from "../../ui/Loading";
 import { useEffect } from "react";
 const MainCompleteProfile = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const from = location.state?.from;
+
   const appSignging = localStorage.getItem("_appSignging") || false;
   const {
     register,
@@ -31,7 +34,8 @@ const MainCompleteProfile = () => {
       { id: user?.id, formData },
       {
         onSuccess: () => {
-          navigate("/dashboard", { replace: true });
+          const path = from || "/dashboard";
+          navigate(path, { replace: true });
           toast.success("اطلاعات شما باموفقیت ثبت شد.");
         },
       },
