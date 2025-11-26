@@ -15,7 +15,15 @@ const CourseDetailsCard = ({ course }) => {
           هزینه آموزش
         </span>
         <span className="text-sm">
-          <strong>{course?.price}</strong> تومان
+          <strong>{+course?.price}</strong> تومان
+        </span>
+      </div>
+      <div className="hidden lg:flex items-center justify-between">
+        <span className="text-xs text-secondary-600 font-semibold hidden lg:inline-block">
+          سازمان
+        </span>
+        <span className="text-sm">
+          <strong>{course?.organization?.name || "-"}</strong>
         </span>
       </div>
       <AddToCartButton
