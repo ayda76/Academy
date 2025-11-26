@@ -1,6 +1,15 @@
 import { createContext, useContext, useReducer } from "react";
 
-const INITIAL_STATE = {
+const loadCart = () => {
+  try {
+    const saved = localStorage.getItem("academy_cart");
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+};
+
+const INITIAL_STATE = loadCart() || {
   cartList: [],
   cartCount: 0,
 };
@@ -9,6 +18,14 @@ const cartReducer = (state, action) => {
   switch (action.type) {
     case "addedToCart": {
       const newList = [...state.cartList, action.payload];
+      localStorage.setItem(
+        "academy_cart",
+        JSON.stringify({
+          ...state,
+          cartList: newList,
+          cartCount: newList.length,
+        }),
+      );
 
       return {
         ...state,
@@ -19,7 +36,15 @@ const cartReducer = (state, action) => {
 
     case "removeFromCart": {
       const newList = state.cartList?.filter((cart) => cart?.id !== action.id);
-      console.log(newList);
+      localStorage.setItem(
+        "academy_cart",
+        JSON.stringify({
+          ...state,
+          cartList: newList,
+          cartCount: newList.length,
+        }),
+      );
+
       return {
         ...state,
         cartList: newList,

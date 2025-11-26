@@ -13,19 +13,24 @@ import AboutusPage from "./pages/aboutus/AboutusPage";
 import CoursesPage from "./pages/courses/CoursesPage";
 import CourseProfilePage from "./pages/courses/CourseProfilePage";
 import CartPage from "./pages/cart/CartPage";
+import { useEffect } from "react";
+import { setAccessToken } from "./services/api";
+import Cookies from "js-cookie";
+
 function App() {
   const queryClient = new QueryClient();
-  // useEffect(() => {
-  //   const getLesson = async () => {
-  //     try {
-  //       const res = await api.get("/api/course/lesson/");
-  //       console.log(res?.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getLesson();
-  // }, []);
+  const _appSignging = localStorage.getItem("_appSignging");
+  const refresh = Cookies.get("refresh");
+
+  useEffect(() => {
+    if (!refresh || !_appSignging) {
+      Cookies.remove("refresh");
+      localStorage.removeItem("_appSignging");
+      setAccessToken(null);
+      // return Promise.reject(error);
+    }
+  }, [refresh, _appSignging]);
+  
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />

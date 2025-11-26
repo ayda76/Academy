@@ -1,6 +1,13 @@
+import { useEffect } from "react";
 import { PiX } from "react-icons/pi";
 
 const Modal = ({ title, children, onClose, className = "" }) => {
+  useEffect(() => {
+    document.body.style.overflowY = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
   return (
     <div
       className="backdrop-blur-sm fixed top-0 left-0
@@ -11,7 +18,7 @@ const Modal = ({ title, children, onClose, className = "" }) => {
         rounded-lg bg-secondary-0 shadow-lg transition-all duration-500 ease-out
         w-[calc(100vw-2rem)] md:max-w-lg ${className}`}
       >
-        <div className="flex items-center justify-between w-full p-1.5 border-b border-secondary-300">
+        <div className="flex items-center justify-between w-full p-2 border-b border-secondary-300">
           <span className="text-sm text-shadow-secondary-400 font-semibold">
             {title}
           </span>

@@ -1,6 +1,13 @@
+import { useEffect } from "react";
 import { PiX } from "react-icons/pi";
 
 const ModalSideBar = ({ title, children, onClose, className = "" }) => {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
   return (
     <div
       className="backdrop-blur-sm fixed top-0 left-0
@@ -17,9 +24,7 @@ const ModalSideBar = ({ title, children, onClose, className = "" }) => {
           </span>
           <PiX className="cursor-pointer" onClick={onClose} />
         </div>
-        <div className="p-2 pt-4">
-            {children}
-        </div>
+        <div className="p-2 pt-4">{children}</div>
       </div>
     </div>
   );
