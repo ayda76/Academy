@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import useUser from "../hooks/auth/useUser";
+import toast from "react-hot-toast";
 
 const AddToCartButton = ({ id, name, price }) => {
   const { user, isLoadingUser } = useUser();
@@ -17,9 +18,10 @@ const AddToCartButton = ({ id, name, price }) => {
         </div>
       ) : isExistInCart === -1 ? (
         <button
-          onClick={() =>
-            dispatch({ type: "addedToCart", payload: { id, name, price } })
-          }
+          onClick={() => {
+            dispatch({ type: "addedToCart", payload: { id, name, price } });
+            toast.success(`دوره ${name} به سبد سفارش اضافه شد.`);
+          }}
           className="w-full p-1.5 cursor-pointer rounded-xl text-center bg-purple-900"
         >
           <span className="text-xs text-white md:text-sm">
