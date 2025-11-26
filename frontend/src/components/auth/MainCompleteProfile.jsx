@@ -1,4 +1,4 @@
-import { Navigate, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useUser from "../../hooks/auth/useUser";
 import TextField from "../../ui/TextField";
@@ -12,7 +12,7 @@ const MainCompleteProfile = () => {
   const navigate = useNavigate();
   const from = location.state?.from;
 
-  const appSignging = localStorage.getItem("_appSignging") || false;
+  // const appSignging = localStorage.getItem("_appSignging") || false;
   const {
     register,
     formState: { errors },
@@ -21,8 +21,7 @@ const MainCompleteProfile = () => {
   } = useForm({
     mode: "onChange",
   });
-  const { user, isLoadingUser, isPending } = useUser();
-  console.log(isLoadingUser, "complete");
+  const { user, isLoadingUser } = useUser();
   const { completeUser, isCreating } = useCompleteProfile();
   const onSubmit = (data) => {
     const formData = {
@@ -43,16 +42,16 @@ const MainCompleteProfile = () => {
   };
   console.log(user);
   useEffect(() => {
-    if (isPending) return;
-    if (!appSignging) {
+    if (isLoadingUser) return;
+    if (!user?.id) {
       navigate("/", { replace: true });
       return;
     }
     if (user?.firstname) {
       navigate("/dashboard", { replace: true });
     }
-  }, [isPending, appSignging, user]);
-  if (isPending) return <Loading />;
+  }, [isLoadingUser, user]);
+  if (isLoadingUser) return <Loading />;
   // if (!isLoadingUser && !user?.id) return <Navigate to={"/"} replace={true} />;
   // if (!isLoadingUser && user?.firstname)
   //   return <Navigate to={"/"} replace={true} />;
