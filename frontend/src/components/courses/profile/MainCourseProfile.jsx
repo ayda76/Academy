@@ -1,22 +1,35 @@
 import useCourseDetails from "../../../hooks/courses/useCourseDetails";
+import useMoveBack from "../../../hooks/useMoveBack";
 import Loading from "../../../ui/Loading";
+import MainCommentList from "./comment/list/MainCommentList";
 import CourseDetailsCard from "./CourseDetailsCard";
 import CourseLesson from "./CourseLesson";
+import { PiArrowLeftLight } from "react-icons/pi";
 
 const MainCourseProfile = () => {
   const { course, isLoading } = useCourseDetails();
   console.log(course);
+  const moveBack = useMoveBack();
 
   return (
     <div className="w-full min-h-screen">
       {isLoading ? (
         <Loading />
       ) : !course ? (
-        <p>موردی یافت نشد.</p>
+        <p className="text-center pt-10">موردی یافت نشد.</p>
       ) : (
         <>
-          <div className="w-full bg-linear-to-l from-purple-50 to-purple-200 py-10">
-            <div className="container space-y-5 mx-auto px-4">
+          <div className="w-full bg-linear-to-l from-purple-50 to-purple-200 pt-4 pb-10">
+            <div className="px-5 flex justify-end">
+              <button
+                onClick={moveBack}
+                className="flex items-center gap-x-2 cursor-pointer"
+              >
+                <span> بازگشت</span>
+                <PiArrowLeftLight className="text-primary-900" />
+              </button>
+            </div>
+            <div className="container space-y-5 mx-auto p-4">
               <div className="w-[250px] h-[150px] lg:hidden rounded-md bg-gray-100 mx-auto">
                 <img
                   src={course?.image || "/assets/images/course/not-found.jpg"}
@@ -83,15 +96,10 @@ const MainCourseProfile = () => {
                   </p>
                 </div>
                 {/* دیدگاه */}
-                <div className="space-y-4">
-                  <h5 className="font-semibold text-secondary-900">دیدگاه</h5>
-                  <p className="text-sm lg:text-base leading-7 lg:leading-8 text-secondary-700">
-                    دیدگاهی برای این دوره ثبت نشده است.
-                  </p>
-                </div>
+                <MainCommentList courseName={course?.name} />
               </div>
 
-              {/* ستون sticky */}
+              {/* مشخصات دوره */}
               <CourseDetailsCard course={course} />
             </div>
           </div>
