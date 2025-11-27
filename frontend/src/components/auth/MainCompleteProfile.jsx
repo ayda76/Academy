@@ -49,71 +49,72 @@ const MainCompleteProfile = () => {
     }
     if (user?.firstname) {
       navigate("/dashboard", { replace: true });
+      return;
     }
   }, [isLoadingUser, user]);
   if (isLoadingUser) return <Loading />;
   // if (!isLoadingUser && !user?.id) return <Navigate to={"/"} replace={true} />;
   // if (!isLoadingUser && user?.firstname)
   //   return <Navigate to={"/"} replace={true} />;
-  // if (!isLoadingUser && appSignging && !user?.firstname)
-  return (
-    <form
-      className="space-y-4  w-full px-5 md:max-w-[400px]"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <h3 className="text-purple-700 font-semibold text-sm md:text-base">
-        اطلاعات خود را تکمیل کنید
-      </h3>
-      <TextField
-        label={"نام"}
-        name={"firstname"}
-        errors={errors}
-        register={register}
-        required
-        validationSchema={{
-          required: "این فیلد الزامی است.",
-        }}
-      />
-      <TextField
-        label={"نام خانوادگی"}
-        name={"lastname"}
-        errors={errors}
-        register={register}
-        required
-        validationSchema={{
-          required: "این فیلد الزامی است.",
-        }}
-      />
-      <TextField
-        label={"ایمیل"}
-        name={"email"}
-        errors={errors}
-        register={register}
-        required
-        validationSchema={{
-          required: "این فیلد الزامی است.",
-          pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: "ایمیل معتبر نیست.",
-          },
-        }}
-      />
-      <TextField
-        label={"شماره موبایل"}
-        name={"phone"}
-        errors={errors}
-        register={register}
-        validationSchema={{
-          pattern: {
-            value: /^0[1-9]{1}[0-9]{9}$/,
-            message: "شماره موبایل معتبر نیست.",
-          },
-        }}
-      />
-      <TextField label={"آدرس"} name={"address"} register={register} />
-      <SubmitButton disabled={isCreating}>تکمیل</SubmitButton>
-    </form>
-  );
+  if (!isLoadingUser && user?.id && !user?.firstname)
+    return (
+      <form
+        className="space-y-4  w-full px-5 md:max-w-[400px]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <h3 className="text-purple-700 font-semibold text-sm md:text-base">
+          اطلاعات خود را تکمیل کنید
+        </h3>
+        <TextField
+          label={"نام"}
+          name={"firstname"}
+          errors={errors}
+          register={register}
+          required
+          validationSchema={{
+            required: "این فیلد الزامی است.",
+          }}
+        />
+        <TextField
+          label={"نام خانوادگی"}
+          name={"lastname"}
+          errors={errors}
+          register={register}
+          required
+          validationSchema={{
+            required: "این فیلد الزامی است.",
+          }}
+        />
+        <TextField
+          label={"ایمیل"}
+          name={"email"}
+          errors={errors}
+          register={register}
+          required
+          validationSchema={{
+            required: "این فیلد الزامی است.",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "ایمیل معتبر نیست.",
+            },
+          }}
+        />
+        <TextField
+          label={"شماره موبایل"}
+          name={"phone"}
+          errors={errors}
+          register={register}
+          validationSchema={{
+            pattern: {
+              value: /^0[1-9]{1}[0-9]{9}$/,
+              message: "شماره موبایل معتبر نیست.",
+            },
+          }}
+        />
+        <TextField label={"آدرس"} name={"address"} register={register} />
+        <SubmitButton disabled={isCreating}>تکمیل</SubmitButton>
+      </form>
+    );
 };
 
 export default MainCompleteProfile;
