@@ -9,7 +9,7 @@ const MainUserInfo = () => {
   return isLoadingCourse ? (
     <Loading />
   ) : (
-    <div className="space-y-4 container">
+    <div className="space-y-4 px-5">
       <div className="flex gap-4">
         <div className="flex items-center gap-2">
           <BiLogoGmail className="text-purple-900 text-xl leading-none" />
@@ -27,7 +27,7 @@ const MainUserInfo = () => {
           </span>
         </div>
         <span className="text-secondary-800 text-sm">
-          {user?.phone || "___"}
+          {0 + user?.phone || "___"}
         </span>
       </div>
       <div className="flex gap-4">
