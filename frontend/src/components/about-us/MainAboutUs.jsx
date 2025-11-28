@@ -1,11 +1,9 @@
 import { PiCheckFatDuotone } from "react-icons/pi";
-import Header from "../header/Header";
 import Footer from "../footer/Footer";
 
 const MainAboutUs = () => {
   return (
     <>
-      <Header />
       <div className="pt-8 container px-5 2xl:px-0">
         <h3 className="text-purple-800 text-lg font-semibold pb-4">
           درباره ما

@@ -3,8 +3,10 @@ import useGetCourseComment from "../../../../../hooks/comment/useGetCourseCommen
 import CommentItem from "./CommentItem";
 import Modal from "../../../../../ui/Modal";
 import MainCreateComment from "../create/MainCreateComment";
+import useUser from "../../../../../hooks/auth/useUser";
 
 const MainCommentList = ({ courseName }) => {
+  const { user } = useUser();
   const { comments, isLoadingCm } = useGetCourseComment();
   const [openCm, setOpenCm] = useState(false);
   return (
@@ -19,12 +21,14 @@ const MainCommentList = ({ courseName }) => {
       )}
       <div className="flex items-center justify-between">
         <h5 className="font-semibold text-secondary-900">دیدگاه</h5>
-        <button
-          onClick={() => setOpenCm(true)}
-          className="text-sm text-purple-800"
-        >
-          ثبت دیدگاه
-        </button>
+        {user?.firstname && (
+          <button
+            onClick={() => setOpenCm(true)}
+            className="text-sm text-purple-800"
+          >
+            ثبت دیدگاه
+          </button>
+        )}
       </div>
       {isLoadingCm ? (
         <p className="text-sm"> در حال بارگذاری...</p>

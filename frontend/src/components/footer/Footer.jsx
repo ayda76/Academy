@@ -4,7 +4,7 @@ import NavLink from "./NavLink";
 const Footer = () => {
   return (
     <footer className="w-full flex flex-col gap-8 py-8 mt-8 bg-secondary-100 rounded-tr-4xl rounded-tl-4xl">
-      <div className="w-full lg:w-5xl xl:w-6xl flex flex-col gap-3 md:gap-0 items-center md:flex-row justify-between mx-auto h-full px-4">
+      <div className="w-full lg:w-4xl 2xl:w-6xl flex flex-col gap-3 md:gap-0 items-center md:flex-row justify-between mx-auto h-full px-4">
         <div className=" flex flex-col gap-4">
           <NavLink />
           <span className="text-secondary-700 flex items-start gap-1 border-t border-t-secondary-600/40 py-4 w-fit">

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useCourseDetails from "../../../hooks/courses/useCourseDetails";
 import useMoveBack from "../../../hooks/useMoveBack";
 import Loading from "../../../ui/Loading";
@@ -94,6 +95,7 @@ const MainCourseProfile = () => {
                   <p className="text-sm lg:text-base leading-7 lg:leading-8 text-secondary-700">
                     پیش نیاز ندارد
                   </p>
+                  {/* <Link to={"/courses?search=data"}>data</Link> */}
                 </div>
                 {/* دیدگاه */}
                 <MainCommentList courseName={course?.name} />

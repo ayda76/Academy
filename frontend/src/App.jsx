@@ -13,44 +13,42 @@ import AboutusPage from "./pages/aboutus/AboutusPage";
 import CoursesPage from "./pages/courses/CoursesPage";
 import CourseProfilePage from "./pages/courses/CourseProfilePage";
 import CartPage from "./pages/cart/CartPage";
-import { useEffect } from "react";
-import { setAccessToken } from "./services/api";
-import Cookies from "js-cookie";
+import ChangePasswordPage from "./pages/dashboard/ChangePasswordPage";
+import AppLayout from "./layout/AppLayout";
+import EditUserPage from "./pages/dashboard/EditUserPage";
+import MyCoursePage from "./pages/dashboard/MyCoursePage";
 
 function App() {
   const queryClient = new QueryClient();
-  const _appSignging = localStorage.getItem("_appSignging");
-  const refresh = Cookies.get("refresh");
-
-  useEffect(() => {
-    if (!refresh || !_appSignging) {
-      Cookies.remove("refresh");
-      localStorage.removeItem("_appSignging");
-      setAccessToken(null);
-      // return Promise.reject(error);
-    }
-  }, [refresh, _appSignging]);
-  
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        {/* auth route */}
         <Route path="/auth" element={<AuthLayout />}>
           <Route index element={<Navigate to={"signin"} replace />} />
           <Route path="signin" element={<SignInPage />} />
           <Route path="signup" element={<SignUpPage />} />
           <Route path="complete-profile" element={<CompleteProfilePage />} />
         </Route>
+        {/* dashboard route */}
         <Route path="dashboard" element={<DashboardPage />}>
           <Route index element={<Navigate to={"user"} replace />} />
           <Route path="user" element={<UserPage />} />
+          <Route path="user/edit" element={<EditUserPage />} />
+          <Route path="change-password" element={<ChangePasswordPage />} />
+          <Route path="course" element={<MyCoursePage />} />
         </Route>
-        <Route path="courses" element={<CoursesPage />}>
-          <Route path=":id" element={<CourseProfilePage />} />
+        {/* public routes */}
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="aboutus" element={<AboutusPage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="courses" element={<CoursesPage />}>
+            <Route path=":id" element={<CourseProfilePage />} />
+          </Route>
         </Route>
-        <Route path="aboutus" element={<AboutusPage />} />
-        <Route path="cart" element={<CartPage />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </QueryClientProvider>

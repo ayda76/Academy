@@ -53,6 +53,7 @@ const cartReducer = (state, action) => {
     }
 
     case "payment": {
+      localStorage.removeItem("academy_cart")
       return INITIAL_STATE;
     }
 

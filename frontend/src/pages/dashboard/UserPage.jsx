@@ -1,8 +1,7 @@
-import useUser from "../../hooks/auth/useUser";
+import MainUserInfo from "../../components/dashboard/user/MainUserInfo";
 
 const UserPage = () => {
-  const { user, isLoadingUSer } = useUser();
-  return <div>UserPage</div>;
+  return <MainUserInfo />;
 };
 
 export default UserPage;

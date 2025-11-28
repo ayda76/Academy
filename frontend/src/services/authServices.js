@@ -17,5 +17,13 @@ export async function userMeApi() {
 }
 
 export async function completeProfileApi({ id, formData }) {
-  return api.patch(`/api/profile/profile/${id}/`,formData).then((res) => res?.data);
+  return api
+    .patch(`/api/profile/profile/${id}/`, formData)
+    .then((res) => res?.data);
+}
+
+export async function changePasswordApi(formData) {
+  return api
+    .post("/api/profile/change/password/", formData)
+    .then((res) => res?.data);
 }

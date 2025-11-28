@@ -17,7 +17,6 @@ const Header = () => {
   const { user, isLoadingUser } = useUser();
   const [open, setOpen] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
-  console.log(isLoadingUser);
   return (
     <header
       className={`${isLoadingUser && "blur-sm"} sticky z-40 inset-0 p-2.5 md:px-6 shadow-md flex items-center justify-between bg-secondary-50`}
@@ -27,7 +26,7 @@ const Header = () => {
         آکادمی
       </Link>
       <div className="hidden md:flex">
-        <Navbar />
+        <Navbar onClose={() => setOpen(false)} />
       </div>
 
       <div className="flex items-center gap-2">
@@ -73,11 +72,9 @@ const Header = () => {
         )}
       </div>
 
-      {open && (
-        <ModalSideBar title={"آکادمی"} onClose={() => setOpen(false)}>
-          <Navbar />
-        </ModalSideBar>
-      )}
+      <ModalSideBar open={open} title={"آکادمی"} onClose={() => setOpen(false)}>
+        <Navbar onClose={() => setOpen(false)} />
+      </ModalSideBar>
       {openConfirm && <ConfirmSignOut onClose={() => setOpenConfirm(false)} />}
     </header>
   );
