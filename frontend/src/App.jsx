@@ -15,6 +15,8 @@ import CourseProfilePage from "./pages/courses/CourseProfilePage";
 import CartPage from "./pages/cart/CartPage";
 import ChangePasswordPage from "./pages/dashboard/ChangePasswordPage";
 import AppLayout from "./layout/AppLayout";
+import EditUserPage from "./pages/dashboard/EditUserPage";
+import MyCoursePage from "./pages/dashboard/MyCoursePage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -33,8 +35,9 @@ function App() {
         <Route path="dashboard" element={<DashboardPage />}>
           <Route index element={<Navigate to={"user"} replace />} />
           <Route path="user" element={<UserPage />} />
+          <Route path="user/edit" element={<EditUserPage />} />
           <Route path="change-password" element={<ChangePasswordPage />} />
-          <Route path="course" element={<UserPage />} />
+          <Route path="course" element={<MyCoursePage />} />
         </Route>
         {/* public routes */}
         <Route element={<AppLayout />}>
