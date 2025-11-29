@@ -9,12 +9,12 @@ import jwt
 # Create your models here.
 
 class Profile(models.Model):
-    user       = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile" )
-    firstname  = models.CharField(max_length=200, blank=True, null=True)
-    lastname   = models.CharField(max_length=200, blank=True, null=True)
-    email      = models.EmailField()
-    phone      = models.DecimalField(blank=True , null=True, max_digits=11, decimal_places=0)
-
+    user          = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile" )
+    firstname     = models.CharField(max_length=200, blank=True, null=True)
+    lastname      = models.CharField(max_length=200, blank=True, null=True)
+    email         = models.EmailField()
+    phone         = models.DecimalField(blank=True , null=True, max_digits=11, decimal_places=0)
+    is_instructor = models.BooleanField(default=False, blank=True, null=True)
    
     address    = models.TextField(blank=True, null=True)
     
@@ -32,3 +32,15 @@ class Profile(models.Model):
         username = decoded['user_id']
         print(f"ccc{username}")
         return Profile.objects.get(user__id=username)    
+    
+    
+class InstructorProfileDetail(models.Model):
+    profile_related  = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile_InstructorProfileDetail" )
+    teaching_field   = models.CharField(max_length=1000, blank=True, null=True)
+    website          = models.CharField(max_length=1000, blank=True, null=True)
+   
+    work_experience  = models.DecimalField(blank=True , null=True, max_digits=2, decimal_places=0)
+    resume           = models.FileField(upload_to="media/files/resume/%Y/%m/%d/", blank=True, null=True)
+    about            = models.TextField(blank=True, null=True)
+    def __str__(self) :
+        return f"{self.about}"

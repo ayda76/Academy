@@ -1,29 +1,15 @@
 from rest_framework import generics, viewsets
-from rest_framework.decorators import api_view ,permission_classes
 from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
 from profile_app.api.serializers import *
-from profile_app.models import Profile
+from profile_app.models import Profile,InstructorProfileDetail
 
 from rest_framework import generics
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django.views.decorators.vary import vary_on_headers, vary_on_cookie
-from django.conf import settings
-from rest_framework import authentication
-from rest_framework import exceptions
-from rest_framework.authentication import get_authorization_header
 from django.db.models import Q
-import jwt
 from django.contrib.auth.forms import PasswordChangeForm
 from rest_framework.views import APIView
-
 from drf_yasg.utils import swagger_auto_schema 
-
-from rest_framework.generics import ListAPIView , CreateAPIView, UpdateAPIView,DestroyAPIView
 
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import action
@@ -68,53 +54,59 @@ class LoginView(APIView):
                                   
                                   
 class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
+    queryset = Profile.objects.prefetch_related('terms')
     serializer_class = ProfileSerializer
     pagination_class=None
     my_tags = ["Profile"]
     
-    @action(detail=True, methods=['get'])
-    def CoursesMe(self, request, pk=None):
-        from course_app.models import Term
+    @action(detail=False, methods=['get'])
+    def CoursesMe(self, request):
+        from course_app.models import Term,Course
         try:
-            profileSelected=Profile.objects.get(id=pk)
+            profileSelected=Profile.get_user_jwt(self,request)
             courses=Term.objects.filter(students=profileSelected).values('course_related')
-            serialized_courses=CourseSerializer(courses,many=True).data
+            courseList=[]
+            for cr in courses:
+                courseList.append(Course.objects.get(id=cr['course_related']))
+            serialized_courses=CourseSerializer(courseList,many=True).data
             return Response(serialized_courses)
         except:
             return Response('error')
         
-    @action(detail=True, methods=['get'])
-    def CommentsMe(self, request, pk=None):
+    @action(detail=False, methods=['get'])
+    def CommentsMe(self, request):
         from comment_app.models import Comment
         try:
-            profileSelected=Profile.objects.get(id=pk)
-            print(f"profileeee{profileSelected}")
+            profileSelected=Profile.get_user_jwt(self,request)
             comments=Comment.objects.filter(profile_related=profileSelected)
-            print(f"comm{comments}")
             serialized_comments=CommentSerializer(comments,many=True).data
             return Response(serialized_comments)
         except:
             return Response('error')
 
+    @action(detail=False, methods=['get'])
+    def AllInstructors(self, request):
+        instructor_profiles=self.queryset.filter(is_instructor=True)
+        return Response(ProfileInstructorSerializer(instructor_profiles,many=True).data)
+        
+class InstructorProfileDetailViewSet(viewsets.ModelViewSet):
+    queryset = InstructorProfileDetail.objects.select_related('profile_InstructorProfileDetail')
+    serializer_class = InstructorProfileDetailSerializer
+    pagination_class=None
+    my_tags = ["Profile"]
+    
 class ProfileMeViewSet(generics.ListAPIView):
     
     my_tags = ["Profile"]
     serializer_class = ProfileSerializer
     pagination_class=None
     
-  
     def get(self,request):
         
         profileSelected = Profile.get_user_jwt( self,request )
-        print(f"profile selected::{profileSelected}")
- 
         serializer = ProfileSerializer(profileSelected)
         return Response(serializer.data)
         
-
-            
-    
 class PasswordChangeView(APIView):
     my_tags = ["Profile"]
 

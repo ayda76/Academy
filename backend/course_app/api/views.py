@@ -101,9 +101,6 @@ class Enroll(CreateAPIView):
             if termSelected.has_capacity ==True and termSelected.valid_enroll_time ==True and profileSelected not in termSelected.students.all():
                
                 termSelected.students.add(profileSelected)
-                print(f"name::{termSelected.course_related.name}")
-                print(f"ssst::{termSelected.start_date}")
-
                 transaction.on_commit(partial(send_confirmation_email_enroll.delay,course_name=termSelected.course_related.name,term_start=termSelected.start_date,user_email=profileSelected.email))
                 # transaction.on_commit(
                 # lambda: send_confirmation_email_enroll.delay(
