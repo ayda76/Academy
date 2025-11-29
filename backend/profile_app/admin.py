@@ -11,6 +11,11 @@ from .models import *
 class ProfileAdmin(ImportExportModelAdmin):
 
     list_display = ('id','firstname','lastname' )
-
-
     resource_class = ProfileResource
+ 
+ 
+@admin.register(InstructorProfileDetail)
+class InstructorProfileDetailAdmin(ImportExportModelAdmin):
+
+    list_display = ('id','profile_related','teaching_field' )
+    resource_class = InstructorProfileDetailResource   

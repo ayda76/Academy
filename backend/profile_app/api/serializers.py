@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.conf import settings
 from django.contrib.auth.models import User
-from profile_app.models import Profile
+from profile_app.models import Profile,InstructorProfileDetail
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -49,7 +49,20 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+        
 
+class InstructorProfileDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = InstructorProfileDetail
+        fields = '__all__'
+        
+class ProfileInstructorSerializer(serializers.ModelSerializer):
+    profile_InstructorProfileDetail=InstructorProfileDetailSerializer(required=True,many=True)
+    class Meta:
+        model = Profile
+        fields = '__all__'
+        
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

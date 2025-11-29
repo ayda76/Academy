@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework import status
 from profile_app.api.serializers import *
-from profile_app.models import Profile
+from profile_app.models import Profile,InstructorProfileDetail
 
 from rest_framework import generics
 from django.db.models import Q
@@ -84,6 +84,17 @@ class ProfileViewSet(viewsets.ModelViewSet):
         except:
             return Response('error')
 
+    @action(detail=False, methods=['get'])
+    def AllInstructors(self, request):
+        instructor_profiles=self.queryset.filter(is_instructor=True)
+        return Response(ProfileInstructorSerializer(instructor_profiles,many=True).data)
+        
+class InstructorProfileDetailViewSet(viewsets.ModelViewSet):
+    queryset = InstructorProfileDetail.objects.select_related('profile_InstructorProfileDetail')
+    serializer_class = InstructorProfileDetailSerializer
+    pagination_class=None
+    my_tags = ["Profile"]
+    
 class ProfileMeViewSet(generics.ListAPIView):
     
     my_tags = ["Profile"]

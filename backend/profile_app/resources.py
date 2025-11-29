@@ -5,4 +5,8 @@ from .models import *
 class ProfileResource(resources.ModelResource):
      class Meta:
           model = Profile
-          
+
+
+class InstructorProfileDetailResource(resources.ModelResource):
+     class Meta:
+          model = InstructorProfileDetail

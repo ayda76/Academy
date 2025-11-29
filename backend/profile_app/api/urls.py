@@ -5,7 +5,7 @@ from django.urls import path , include ,re_path
 
 router = DefaultRouter()
 router.register("profile", ProfileViewSet)
-
+router.register("instructorProfileDetail", InstructorProfileDetailViewSet)
 
 
 urlpatterns = [
