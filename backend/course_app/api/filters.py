@@ -8,4 +8,6 @@ class CourseFilter(django_filters.FilterSet):
         fields={
             'name':['iexact','icontains'],
             'price':['exact','lt','gt','range'],
-            'organization__name':['iexact','icontains']}
+            'organization__name':['iexact','icontains'],
+            'is_online':['exact']
+            }

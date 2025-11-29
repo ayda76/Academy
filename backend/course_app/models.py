@@ -34,6 +34,7 @@ class Course(models.Model):
     lessons_related  = models.ManyToManyField(Lesson,related_name='courses_lesson')
     organization     = models.ForeignKey(Organization,related_name='courses_organization',on_delete=models.CASCADE)
     price            = models.DecimalField(max_digits=10,decimal_places=2, default=0)
+    is_online        = models.BooleanField(default=True, blank=True, null=True)
     def __str__(self):
         return self.name
     
