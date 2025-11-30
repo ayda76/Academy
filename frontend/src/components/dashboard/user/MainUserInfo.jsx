@@ -4,7 +4,7 @@ import Loading from "../../../ui/Loading";
 import useCourseMe from "../../../hooks/courses/useCourseMe";
 const MainUserInfo = () => {
   const { user } = useUser();
-  const { myCourse, isLoadingCourse } = useCourseMe(user?.id);
+  const { myCourse, isLoadingCourse } = useCourseMe();
   console.log(myCourse);
   return isLoadingCourse ? (
     <Loading />
