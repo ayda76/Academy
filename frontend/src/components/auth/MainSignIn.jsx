@@ -13,6 +13,7 @@ const MainSignIn = () => {
   const appSignging = localStorage.getItem("_appSignging") || false;
   const location = useLocation();
   const from = location.state?.from;
+  console.log(location);
   
   const {
     register,
@@ -82,7 +83,7 @@ const MainSignIn = () => {
         <SubmitButton disabled={isCreatingRefresh}>ورود</SubmitButton>
         <Link
           to={"/auth/signup"}
-          state={{ from: location.pathname }}
+          state={{ from }}
           className="text-secondary-700 text-xs"
         >
           حساب کاربری ندارید؟ ایجاد حساب کاربری

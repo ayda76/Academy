@@ -5,7 +5,7 @@ import SubmitButton from "../../../../../ui/SubmitButton";
 import TextAreaField from "../../../../../ui/TextAreaField";
 import { useForm } from "react-hook-form";
 
-const MainCreateComment = () => {
+const MainCreateComment = ({ onClose }) => {
   const { id } = useParams();
   const { user } = useUser();
   const {
@@ -17,12 +17,16 @@ const MainCreateComment = () => {
   const onSubmit = (data) => {
     const formData = {
       ...data,
-      content_type: 21,
+      content_type: "course_app.course",
       profile_related: user?.id,
-      object_id: +id,
+      object_id: id,
     };
     console.log(formData);
-    cretaeCommentFn(formData);
+    cretaeCommentFn(formData, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   };
   return (
     <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
@@ -36,7 +40,7 @@ const MainCreateComment = () => {
           required: "این فیلد الزامی است.",
         }}
       />
-      <SubmitButton>ثبت</SubmitButton>
+      <SubmitButton disabled={isCreating}>ثبت</SubmitButton>
     </form>
   );
 };

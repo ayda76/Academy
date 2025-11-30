@@ -3,6 +3,7 @@ import OrganizationFilter from "./OrganizationFilter";
 import PriceRangeSlider from "./PriceRangeSlider";
 import { useSearchParams } from "react-router-dom";
 import { PiX } from "react-icons/pi";
+import OnlineCourseFilter from "./OnlineCourseFilter";
 
 const CourseFilter = ({ setParams, params, setFilterOpen }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,9 +12,11 @@ const CourseFilter = ({ setParams, params, setFilterOpen }) => {
   const price = params?.price__range?.split(",");
   const selectMinValue = price?.[0] || MIN;
   const selectMaxValue = price?.[1] || MAX;
-  console.log(selectMinValue, selectMaxValue);
   const [minValue, setMinValue] = useState(selectMinValue);
   const [maxValue, setMaxValue] = useState(selectMaxValue);
+
+  const [isOnline, setIsOnline] = useState(params?.is_online || "");
+  // console.log("isOnline",isOnline);
 
   const [orgSelected, setOrgSelected] = useState(
     "" || params?.organization__name__iexact,
@@ -21,18 +24,20 @@ const CourseFilter = ({ setParams, params, setFilterOpen }) => {
   const submitFilter = () => {
     const price__range = `${minValue},${maxValue}`;
     const organization__name__iexact = orgSelected;
+    const is_online = isOnline;
     if (orgSelected) {
       setParams((params) => ({
         ...params,
         price__range,
         organization__name__iexact,
+        is_online,
         page: 1,
       }));
       searchParams.set("page", 1);
       setSearchParams(searchParams);
     } else {
       delete params?.organization__name__iexact;
-      setParams((params) => ({ ...params, price__range, page: 1 }));
+      setParams((params) => ({ ...params, price__range, is_online, page: 1 }));
       searchParams.set("page", 1);
       setSearchParams(searchParams);
     }
@@ -56,6 +61,7 @@ const CourseFilter = ({ setParams, params, setFilterOpen }) => {
         maxValue={maxValue}
         setMaxValue={setMaxValue}
       />
+      <OnlineCourseFilter isOnline={isOnline} setIsOnline={setIsOnline} />
       <OrganizationFilter
         orgSelected={orgSelected}
         setOrgSelected={setOrgSelected}

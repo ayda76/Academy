@@ -4,10 +4,14 @@ import CommentItem from "./CommentItem";
 import Modal from "../../../../../ui/Modal";
 import MainCreateComment from "../create/MainCreateComment";
 import useUser from "../../../../../hooks/auth/useUser";
+import useAuth from "../../../../../hooks/useAuth";
 
-const MainCommentList = ({ courseName }) => {
+const MainCommentList = ({ courseName, courseId }) => {
   const { user } = useUser();
-  const { comments, isLoadingCm } = useGetCourseComment();
+  const { comments, isLoadingCm, isFetching } = useGetCourseComment();
+  const { myCourse, isLoadingCourse, isLoadingUser } = useAuth();
+  const course = !myCourse || myCourse === "error" ? [] : myCourse;
+  const isEnroll = user?.firstname && course?.some((c) => c?.id === courseId);
   const [openCm, setOpenCm] = useState(false);
   return (
     <div className="space-y-4 w-full md:w-[80%]">
@@ -16,12 +20,12 @@ const MainCommentList = ({ courseName }) => {
           onClose={() => setOpenCm(false)}
           title={`ثبت دیدگاه برای دوره ${courseName}`}
         >
-          <MainCreateComment />
+          <MainCreateComment onClose={() => setOpenCm(false)} />
         </Modal>
       )}
       <div className="flex items-center justify-between">
         <h5 className="font-semibold text-secondary-900">دیدگاه</h5>
-        {user?.firstname && (
+        {isEnroll && (
           <button
             onClick={() => setOpenCm(true)}
             className="text-sm text-purple-800"
@@ -30,7 +34,7 @@ const MainCommentList = ({ courseName }) => {
           </button>
         )}
       </div>
-      {isLoadingCm ? (
+      {isLoadingCm || isFetching ? (
         <p className="text-sm"> در حال بارگذاری...</p>
       ) : comments?.length < 1 ? (
         <p className="text-sm lg:text-base leading-7 lg:leading-8 text-secondary-700">

@@ -11,6 +11,7 @@ const MainCompleteProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from;
+  console.log(location);
 
   // const appSignging = localStorage.getItem("_appSignging") || false;
   const {
@@ -34,6 +35,7 @@ const MainCompleteProfile = () => {
       {
         onSuccess: () => {
           const path = from || "/dashboard";
+          console.log(from,path);
           navigate(path, { replace: true });
           toast.success("اطلاعات شما باموفقیت ثبت شد.");
         },
@@ -48,6 +50,7 @@ const MainCompleteProfile = () => {
       return;
     }
     if (user?.firstname) {
+      console.log("ii");
       navigate("/dashboard", { replace: true });
       return;
     }

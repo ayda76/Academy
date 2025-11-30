@@ -2,11 +2,11 @@ import { PiX } from "react-icons/pi";
 import { useCart } from "../../context/CartContext";
 import toast from "react-hot-toast";
 
-const CartItem = () => {
-  const { cartList, dispatch } = useCart();
+const CartItem = ({ isNotEnroll }) => {
+  const { dispatch } = useCart();
   return (
     <div className="basis-1/3">
-      {cartList?.map((cart) => (
+      {isNotEnroll?.map((cart) => (
         <div
           key={cart?.id}
           className="p-2 border-t border-t-secondary-300 first:border-none flex items-center justify-between bg-secondary-100"

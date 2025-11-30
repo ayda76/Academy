@@ -27,7 +27,7 @@ export default function PriceRangeSlider({
       {/* <span className="text-sm text-gray-900 inline-block mb-4">براساس هزینه</span> */}
       <div className="flex justify-between mb-4 text-xs font-semibold">
         <span>
-          {minValue === 0 ? "رایگان" : `${minValue?.toLocaleString()} تومان`}
+          {minValue == 0 ? "رایگان" : `${minValue?.toLocaleString()} تومان`}
         </span>
         <span>{maxValue?.toLocaleString()} تومان</span>
       </div>

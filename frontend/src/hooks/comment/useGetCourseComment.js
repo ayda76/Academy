@@ -4,11 +4,15 @@ import { getCourseCommentApi } from "../../services/commentService";
 
 export default function useGetCourseComment() {
   const { id } = useParams();
-  const { data: comments, isLoading: isLoadingCm } = useQuery({
+  const {
+    data: comments,
+    isLoading: isLoadingCm,
+    isFetching,
+  } = useQuery({
     queryKey: ["course-comment", id],
     queryFn: () => getCourseCommentApi(id),
     enabled: !!id,
     retry: false,
   });
-  return { comments, isLoadingCm };
+  return { comments, isLoadingCm, isFetching };
 }

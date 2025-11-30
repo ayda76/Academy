@@ -51,6 +51,7 @@ const MainCourseProfile = () => {
             <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
               {/* ستون متن */}
               <div className="lg:col-span-2 space-y-8">
+                <p>این آموزش به صورت {course?.is_online?"آنلاین":"آفلاین"} برگزار میشود.</p>
                 {/* درس */}
                 <div className="flex flex-col gap-4">
                   <h5 className="font-semibold text-secondary-900">
@@ -66,6 +67,7 @@ const MainCourseProfile = () => {
                       course?.lessons_related?.map((lesson, index) => (
                         <CourseLesson
                           key={lesson?.id}
+                          courseId={course?.id}
                           lesson={lesson}
                           index={index + 1}
                         />
@@ -98,7 +100,10 @@ const MainCourseProfile = () => {
                   {/* <Link to={"/courses?search=data"}>data</Link> */}
                 </div>
                 {/* دیدگاه */}
-                <MainCommentList courseName={course?.name} />
+                <MainCommentList
+                  courseName={course?.name}
+                  courseId={course?.id}
+                />
               </div>
 
               {/* مشخصات دوره */}
