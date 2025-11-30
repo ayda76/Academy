@@ -7,7 +7,7 @@ const OrganizationFilter = ({ orgSelected, setOrgSelected }) => {
       <span className="text-sm text-gray-900 inline-block mb-2">
         براساس سازمان
       </span>
-      <div className="w-full h-[60vh] md:h-[100px] md:max-h-[200px] overflow-auto">
+      <div className="w-full h-[40vh] md:h-[100px] md:max-h-[200px] overflow-auto">
         {isLoadingOrg ? (
           Array.from({ length: 3 }).map((arr, index) => (
             <div

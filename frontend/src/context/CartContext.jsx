@@ -34,6 +34,24 @@ const cartReducer = (state, action) => {
       };
     }
 
+    case "removeIsEnrollCourse": {
+      const newList = action.payload;
+      localStorage.setItem(
+        "academy_cart",
+        JSON.stringify({
+          ...state,
+          cartList: newList,
+          cartCount: newList.length,
+        }),
+      );
+
+      return {
+        ...state,
+        cartList: newList,
+        cartCount: newList.length,
+      };
+    }
+
     case "removeFromCart": {
       const newList = state.cartList?.filter((cart) => cart?.id !== action.id);
       localStorage.setItem(
@@ -53,7 +71,7 @@ const cartReducer = (state, action) => {
     }
 
     case "payment": {
-      localStorage.removeItem("academy_cart")
+      localStorage.removeItem("academy_cart");
       return INITIAL_STATE;
     }
 
