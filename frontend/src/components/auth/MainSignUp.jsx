@@ -12,6 +12,8 @@ import Loading from "../../ui/Loading";
 const MainSignUp = () => {
   const appSignging = localStorage.getItem("_appSignging") || false;
   const location = useLocation();
+  const from = location.state?.from;
+  console.log(location);
   const {
     register,
     formState: { errors },
@@ -37,7 +39,7 @@ const MainSignUp = () => {
           sameSite: "strict",
         });
         setAccessToken(data?.access);
-        navigate("/auth/complete-profile", { replace: true });
+        navigate("/auth/complete-profile", { replace: true, state: { from } });
       },
     });
   };
@@ -113,7 +115,7 @@ const MainSignUp = () => {
         <SubmitButton disabled={isCreatingUser}>ثبت‌نام</SubmitButton>
         <Link
           to={"/auth/signin"}
-          state={{ from: location.pathname }}
+          state={{ from }}
           className="text-secondary-700 text-xs"
         >
           حساب کاربری دارید؟ ورود به حساب کاربری
