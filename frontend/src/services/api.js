@@ -9,13 +9,16 @@ const api = axios.create({
 
 let accessToken = null;
 
-api.interceptors.request.use((config) => {
-  if (accessToken) {
-    config.headers["Authorization"] = accessToken;
-  }
-  console.log(accessToken);
-  return config;
-},(err) => Promise.reject(err),);
+api.interceptors.request.use(
+  (config) => {
+    if (accessToken) {
+      config.headers["Authorization"] = accessToken;
+    }
+    console.log(accessToken);
+    return config;
+  },
+  (err) => Promise.reject(err),
+);
 
 api.interceptors.response.use(
   (res) => res,
@@ -24,11 +27,11 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalConfig._retry) {
       originalConfig._retry = true;
       const refresh = Cookies.get("refresh");
-      
+
       if (!refresh) {
         Cookies.remove("refresh");
         localStorage.removeItem("_appSignging");
-        accessToken=null;
+        accessToken = null;
         return Promise.reject(error);
       }
 
@@ -59,5 +62,8 @@ export function setAccessToken(token) {
   accessToken = token;
 }
 
+export function getAccessToken() {
+  return accessToken;
+}
 
 export default api;
