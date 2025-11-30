@@ -1,4 +1,5 @@
 import AddToCartButton from "../../../ui/AddToCartButton";
+import EnrollButton from "../../../ui/EnrollButton";
 
 const CourseDetailsCard = ({ course }) => {
   return (
@@ -26,11 +27,23 @@ const CourseDetailsCard = ({ course }) => {
           <strong>{course?.organization?.name || "-"}</strong>
         </span>
       </div>
-      <AddToCartButton
-        id={course?.id}
-        name={course?.name}
-        price={course?.price}
-      />
+      <div className="hidden lg:flex items-center justify-between">
+        <span className="text-xs text-secondary-600 font-semibold hidden lg:inline-block">
+          نوع
+        </span>
+        <span className="text-sm">
+          <strong>{course?.is_online ? "آنلاین" : "آفلاین"}</strong>
+        </span>
+      </div>
+      {course?.is_online ? (
+        <EnrollButton courseId={course?.id} courseName={course?.name} />
+      ) : (
+        <AddToCartButton
+          id={course?.id}
+          name={course?.name}
+          price={course?.price}
+        />
+      )}
     </div>
   );
 };

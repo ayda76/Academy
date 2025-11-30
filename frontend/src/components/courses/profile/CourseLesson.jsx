@@ -4,28 +4,30 @@ import {
   PiLockSimpleLight,
   PiVideo,
 } from "react-icons/pi";
-import useUser from "../../../hooks/auth/useUser";
 import { useState } from "react";
-import api from "../../../services/api";
+import useAuth from "../../../hooks/useAuth";
 
-const CourseLesson = ({ lesson, index }) => {
-  const { user } = useUser();
+const CourseLesson = ({ lesson, index, courseId }) => {
+  // const { user } = useUser();
+  const { myCourse, isLoadingCourse, isLoadingUser, user } = useAuth();
+  const course = !myCourse || myCourse === "error" ? [] : myCourse;
+  const isEnroll = user?.id && course?.some((c) => c?.id === courseId);
   const [open, setOpen] = useState(false);
   return (
     <div className="border-b border-secondary-200/80 last:border-none">
       <div
         onClick={() => {
-          user?.id && setOpen(!open);
+          isEnroll && setOpen(!open);
         }}
         className={`bg-secondary-50 p-4 flex items-center justify-between
-          ${user?.id ? "cursor-pointer" : "cursor-default"}`}
+          ${isEnroll ? "cursor-pointer" : "cursor-default"}`}
       >
         <div className="flex items-start gap-2">
           <span className="text-sm text-secondary-400">درس {index} :</span>
           <span className="text-sm">{lesson?.name}</span>
         </div>
         {/* <a href={lesson?.articles[0]?.file_doc} download>دانلود</a> */}
-        {!user?.id ? (
+        {!isEnroll ? (
           <PiLockSimpleLight />
         ) : (
           <PiCaretDown
@@ -53,16 +55,23 @@ const CourseLesson = ({ lesson, index }) => {
             ))
           )}
           {lesson?.video && (
-            <a
-              href={lesson?.video}
-              download={lesson?.video}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 text-secondary-600"
-            >
-              <PiVideo className="text-xl" />
-              <span className="text-sm">دانلود ویدیو </span>
-            </a>
+            <>
+              <a
+                href={lesson?.video}
+                download={lesson?.video}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-secondary-600"
+              >
+                <PiVideo className="text-xl" />
+                <span className="text-sm">دانلود ویدیو </span>
+              </a>
+              <video
+                src={lesson?.video}
+                controls
+                className="max-w-[400px] aspect-video"
+              ></video>
+            </>
           )}
         </div>
       )}
