@@ -25,13 +25,29 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model=Lesson
         fields='__all__'
-        
+ 
+class TermSimpleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Term
+        fields='__all__'       
 class CourseSerializer(serializers.ModelSerializer):
     lessons_related=LessonSerializer(many=True,read_only=True)
     organization=OrganizationSimpleSerializer(read_only=True)
+    latest_term=serializers.SerializerMethodField()
+    has_term=serializers.SerializerMethodField()
     class Meta:
         model=Course
         fields='__all__'
+
+    def get_latest_term(self,obj):
+        last_term=Term.objects.filter(course_related=obj).last()
+        if last_term==None:
+            return None
+        return TermSimpleSerializer(last_term).data
+
+    def get_has_term(self,obj):
+        return obj.has_term  
   
   
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -40,11 +56,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
         model=Organization
         fields='__all__'
         
-class TermSimpleSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model=Term
-        fields='__all__'
 class TermSerializer(serializers.ModelSerializer):
     course_related=CourseSerializer(read_only=True)
     students=ProfileSerializer(required=False,read_only=True,many=True)

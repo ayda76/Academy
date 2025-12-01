@@ -38,6 +38,10 @@ class Course(models.Model):
     def __str__(self):
         return self.name
     
+    @property
+    def has_term(self):
+        return any(term.valid_enroll_time for term in self.terms.all())
+    
     
 class Term(models.Model):
     title                  = models.CharField(max_length=800, blank=True, null=True)
@@ -60,6 +64,12 @@ class Term(models.Model):
             return self.enroll_start_date <= today <= self.enroll_finish_date
         return False
        
+    @property
+    def is_active(self):
+        today=date.today()
+        if self.start_date and self.finish_date:
+            return self.start_date <= today <= self.finish_date
+        return False
     
     def __str__(self):
         return self.title
