@@ -44,7 +44,7 @@ class LessonViewSet(viewsets.ModelViewSet):
     my_tags = ["Course"]
 
 class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.select_related('organization').prefetch_related('lessons_related')
+    queryset = Course.objects.select_related('organization').prefetch_related('lessons_related','terms')
     serializer_class = CourseSerializer
     
     pagination_class=PageNumberPagination
