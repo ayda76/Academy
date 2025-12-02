@@ -66,3 +66,6 @@ class TermSerializer(serializers.ModelSerializer):
         
 class EnrollTermSerializer(serializers.Serializer):
     term_id = serializers.IntegerField()  
+
+class BuyCourseSerializer(serializers.Serializer):
+    course_ids = serializers.CharField()      
