@@ -134,6 +134,24 @@ class PasswordChangeView(APIView):
             return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
         
-       
+class ProfileOfflineCourseViewSet(viewsets.ModelViewSet):
+    queryset = ProfileOfflineCourse.objects.select_related('profile_related').prefetch_related('offline_course')
+    serializer_class = ProfileOfflineCourseSerializer
+    pagination_class=None
+    my_tags = ["Profile"]     
+    
+    @action(detail=False, methods=['get'])
+    def OfflineCourseMe(self, request):
+        from course_app.models import Course
+        from course_app.api.serializers import CourseSerializer
+        try:
+            profileSelected=Profile.get_user_jwt(self,request)
+            offline_courses=ProfileOfflineCourse.objects.filter(profile_related=profileSelected).values('offline_course')
+            list_courses=[]
+            [list_courses.append(Course.objects.get(id=course['offline_course'])) for course in offline_courses]
+            
+            return Response(CourseSerializer(list_courses,many=True).data)
+        except:
+            return Response('error')
         
        

@@ -17,5 +17,6 @@ urlpatterns = [
     path("", include(router.urls)),
     
     path('enroll/', Enroll.as_view()),
+    path('buyCourse/', BuyCourse.as_view()),
 
 ]

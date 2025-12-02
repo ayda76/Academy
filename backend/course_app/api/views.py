@@ -1,10 +1,10 @@
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
-from rest_framework import status
+
 from course_app.api.serializers import *
-from profile_app.models import Profile
+from profile_app.models import Profile,ProfileOfflineCourse
 from course_app.models import *
-from rest_framework import generics
+
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
@@ -72,7 +72,7 @@ class CourseViewSet(viewsets.ModelViewSet):
             return Response(serialized_comments)
         except:
             return Response('error')
-    
+
 
 class TermViewSet(viewsets.ModelViewSet):
     queryset = Term.objects.select_related('course_related').prefetch_related('students')
@@ -84,7 +84,27 @@ class TermViewSet(viewsets.ModelViewSet):
         else:
             return TermSerializer
         
-    
+class BuyCourse(CreateAPIView):
+    serializer_class=BuyCourseSerializer
+    my_tags = ["Course"]
+    def post(self, request):
+        profileSelected = Profile.get_user_jwt(self , self.request)
+        serializer = self.get_serializer(data=request.data)
+        
+        if serializer.is_valid():
+            course_ids = serializer.validated_data['course_ids']
+            list_courseIds=course_ids.split(',')
+            list_ids=[]
+            [list_ids.append(Course.objects.get(id=int(cr_id))) for cr_id in list_courseIds]
+        with transaction.atomic(): 
+            Variable, Created =ProfileOfflineCourse.objects.update_or_create(profile_related=profileSelected)
+            Variable.offline_course.set(list_ids)
+            Variable.save()
+            return Response('successfully submitted')
+            
+            
+       
+      
     
 class Enroll(CreateAPIView):
     serializer_class=EnrollTermSerializer

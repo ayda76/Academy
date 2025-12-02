@@ -30,7 +30,7 @@ class Profile(models.Model):
         decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
         
         username = decoded['user_id']
-        print(f"ccc{username}")
+       
         return Profile.objects.get(user__id=username)    
     
     
@@ -42,5 +42,12 @@ class InstructorProfileDetail(models.Model):
     work_experience  = models.DecimalField(blank=True , null=True, max_digits=2, decimal_places=0)
     resume           = models.FileField(upload_to="media/files/resume/%Y/%m/%d/", blank=True, null=True)
     about            = models.TextField(blank=True, null=True)
+    def __str__(self) :
+        return f"{self.about}"
+    
+class ProfileOfflineCourse(models.Model):
+    from course_app.models import Course
+    profile_related  = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile_offlinecourses" )
+    offline_course   = models.ManyToManyField(Course, related_name='profileOfflineCourses',blank=True, null=True)
     def __str__(self) :
         return f"{self.about}"
