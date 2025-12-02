@@ -6,7 +6,7 @@ from profile_app.models import Profile,InstructorProfileDetail
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
-from profile_app.models import Profile 
+from profile_app.models import *
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -49,7 +49,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
-        
+ 
+class ProfileOfflineCourseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProfileOfflineCourse
+        fields = '__all__'       
 
 class InstructorProfileDetailSerializer(serializers.ModelSerializer):
 
