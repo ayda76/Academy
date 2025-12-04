@@ -3,7 +3,7 @@ import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import useEnroll from "../hooks/courses/useEnroll";
 
-const EnrollButton = ({ courseId, courseName }) => {
+const EnrollButton = ({ courseId, courseName, has_term, termId }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   console.log(pathname);
@@ -23,11 +23,12 @@ const EnrollButton = ({ courseId, courseName }) => {
       return;
     }
     const formData = {
-      term_id: courseId,
+      term_id: termId,
     };
+    console.log(formData);
     enrollCourseFn(formData, {
       onSuccess: () => {
-        toast.success(`دوره ${courseName} باموفقیت ثیت‌نام شد`);
+        toast.success(`دوره ${courseName} باموفقیت ثبت‌نام شد`);
         navigate("/dashboard/course");
       },
     });
@@ -42,7 +43,7 @@ const EnrollButton = ({ courseId, courseName }) => {
             شما دانشجو دوره هستید
           </span>
         </div>
-      ) : (
+      ) : has_term ? (
         <button
           onClick={enrollHandler}
           disabled={isPending}
@@ -50,6 +51,12 @@ const EnrollButton = ({ courseId, courseName }) => {
         >
           <span className="text-xs text-white md:text-sm">ثبت‌نام</span>
         </button>
+      ) : (
+        <div className="w-full p-1.5 rounded-xl text-center bg-purple-900">
+          <span className="text-xs text-white md:text-sm">
+            مهلت ثبت‌نام تمام شده
+          </span>
+        </div>
       )}
     </div>
   );
