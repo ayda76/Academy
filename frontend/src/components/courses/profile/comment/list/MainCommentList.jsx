@@ -28,7 +28,7 @@ const MainCommentList = ({ courseName, courseId }) => {
         {isEnroll && (
           <button
             onClick={() => setOpenCm(true)}
-            className="text-sm text-purple-800"
+            className="text-sm text-purple-800 cursor-pointer"
           >
             ثبت دیدگاه
           </button>
