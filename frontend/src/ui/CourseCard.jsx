@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import priceType from "../utils/priceType";
 
 const CourseCard = ({ course }) => {
   return (
@@ -14,7 +15,7 @@ const CourseCard = ({ course }) => {
             />
           </div>
 
-          {/* نام و قیمت */}
+          {/* نام  */}
           <span className="text-base font-bold line-clamp-1 text-gray-700">
             {course?.name}
           </span>
@@ -25,7 +26,7 @@ const CourseCard = ({ course }) => {
           </span>
           <div className="border-t border-gray-200 pt-3">
             <strong className="text-sm font-semibold text-secondary-700">
-              {+course?.price} تومان
+              {priceType(+course?.price)} تومان
             </strong>
           </div>
         </div>

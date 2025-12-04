@@ -1,5 +1,6 @@
 import AddToCartButton from "../../../ui/AddToCartButton";
 import EnrollButton from "../../../ui/EnrollButton";
+import priceType from "../../../utils/priceType";
 
 const CourseDetailsCard = ({ course }) => {
   return (
@@ -16,7 +17,7 @@ const CourseDetailsCard = ({ course }) => {
           هزینه آموزش
         </span>
         <span className="text-sm">
-          <strong>{+course?.price}</strong> تومان
+          <strong>{priceType(+course?.price)}</strong> تومان
         </span>
       </div>
       <div className="hidden lg:flex items-center justify-between">
@@ -36,7 +37,12 @@ const CourseDetailsCard = ({ course }) => {
         </span>
       </div>
       {course?.is_online ? (
-        <EnrollButton courseId={course?.id} courseName={course?.name} />
+        <EnrollButton
+          courseId={course?.id}
+          courseName={course?.name}
+          has_term={course?.has_term}
+          termId={course?.latest_term?.id}
+        />
       ) : (
         <AddToCartButton
           id={course?.id}
