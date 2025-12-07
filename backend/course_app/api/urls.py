@@ -9,7 +9,7 @@ router.register("resource", ResourceViewSet)
 router.register("lesson", LessonViewSet)
 router.register("course", CourseViewSet)
 router.register("term", TermViewSet)
-
+router.register("rating", RatingViewSet)
 
 
 urlpatterns = [

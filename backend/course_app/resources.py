@@ -26,3 +26,8 @@ class CourseResource(resources.ModelResource):
 class TermResource(resources.ModelResource):
      class Meta:
           model = Term          
+
+class RatingResource(resources.ModelResource):
+     class Meta:
+          model = Rating      
+

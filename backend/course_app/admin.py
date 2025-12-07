@@ -47,3 +47,11 @@ class TermAdmin(ImportExportModelAdmin):
 
 
     resource_class = TermResource
+    
+@admin.register(Rating)
+class RatingAdmin(ImportExportModelAdmin):
+
+    list_display = ('id', )
+
+
+    resource_class = RatingResource
