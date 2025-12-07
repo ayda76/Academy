@@ -84,6 +84,14 @@ class TermViewSet(viewsets.ModelViewSet):
         else:
             return TermSerializer
         
+class RatingViewSet(viewsets.ModelViewSet):
+    queryset = Rating.objects.select_related('course_related','profile_related')
+    pagination_class=None
+    serializer_class=RatingSerializer
+    my_tags = ["Course"]
+
+
+       
 class BuyCourse(CreateAPIView):
     serializer_class=BuyCourseSerializer
     my_tags = ["Course"]

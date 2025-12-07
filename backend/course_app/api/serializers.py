@@ -69,3 +69,9 @@ class EnrollTermSerializer(serializers.Serializer):
 
 class BuyCourseSerializer(serializers.Serializer):
     course_ids = serializers.CharField()      
+
+class RatingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Rating
+        fields='__all__'
