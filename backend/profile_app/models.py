@@ -5,6 +5,7 @@ from rest_framework.authentication import get_authorization_header
 from django.conf import settings
 from rest_framework import exceptions
 import jwt
+from jwt import ExpiredSignatureError, InvalidTokenError
 
 # Create your models here.
 
@@ -23,15 +24,35 @@ class Profile(models.Model):
     
     def get_user_jwt(self,request):
         
-        token = get_authorization_header(request).decode('utf-8')
-        if token is None or token == "null" or token.strip() == "":
-            raise exceptions.AuthenticationFailed('Authorization Header or Token is missing on Request Headers')
+        #get authoriztion header
+        auth = get_authorization_header(request).split()
+        if not auth or len(auth) == 0:
+            raise exceptions.AuthenticationFailed("Authorization header missing")
+
+        # expected::: [b'Bearer', b'<token>']
+        if auth[0].lower() != b'bearer' or len(auth) != 2:
+            raise exceptions.AuthenticationFailed("Invalid Authorization header. Expected 'Bearer <token>'")
         
-        decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-        
-        username = decoded['user_id']
-       
-        return Profile.objects.get(user__id=username)    
+        #convert byte to str
+        token = auth[1].decode('utf-8')
+
+        try:
+            # check if the signiture is valid according to secret key and token is not expired 
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        except ExpiredSignatureError:
+            raise exceptions.AuthenticationFailed("Token has expired")
+        except InvalidTokenError:
+            raise exceptions.AuthenticationFailed("Invalid token")
+
+        user_id = payload.get('user_id') or payload.get('id') or payload.get('sub')
+        if not user_id:
+            raise exceptions.AuthenticationFailed("Token payload does not contain user id")
+
+        try:
+            profile = Profile.objects.get(user__id=user_id)
+        except Profile.DoesNotExist:
+            raise exceptions.AuthenticationFailed("No profile found for user")
+        return profile  
     
     
 class InstructorProfileDetail(models.Model):
