@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import TextField from "../../ui/TextField";
 import PasswordField from "../../ui/PasswordField";
 import useGetRefresh from "../../hooks/auth/useGetRefresh";
-import { setAccessToken } from "../../services/api";
+// import { setAccessToken } from "../../services/api";
 import SubmitButton from "../../ui/SubmitButton";
 import Loading from "../../ui/Loading";
 
@@ -14,7 +14,7 @@ const MainSignIn = () => {
   const location = useLocation();
   const from = location.state?.from;
   console.log(location);
-  
+
   const {
     register,
     formState: { errors },
@@ -35,7 +35,8 @@ const MainSignIn = () => {
           secure: true,
           sameSite: "strict",
         });
-        setAccessToken(data?.access);
+        // setAccessToken(data?.access);
+        localStorage.setItem("token",  data?.access);
         const path = from || "/dashboard";
         navigate(path, { replace: true });
       },

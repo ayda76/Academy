@@ -6,7 +6,7 @@ import PasswordField from "../../ui/PasswordField";
 import SubmitButton from "../../ui/SubmitButton";
 import useSignUp from "../../hooks/auth/useSignUp";
 import Cookies from "js-cookie";
-import { setAccessToken } from "../../services/api";
+// import { setAccessToken } from "../../services/api";
 import Loading from "../../ui/Loading";
 
 const MainSignUp = () => {
@@ -38,7 +38,8 @@ const MainSignUp = () => {
           secure: true,
           sameSite: "strict",
         });
-        setAccessToken(data?.access);
+        // setAccessToken(data?.access);
+        localStorage.setItem("token", data?.access);
         navigate("/auth/complete-profile", { replace: true, state: { from } });
       },
     });
