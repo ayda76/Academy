@@ -14,10 +14,12 @@ class Comment(models.Model):
     profile_related   = models.ForeignKey(Profile,related_name='comments_profile',on_delete=models.CASCADE)
     text              = models.TextField(blank = True , null = True)
     origin            = models.ForeignKey('self',blank = True , null = True , on_delete=models.CASCADE)
-    
+   
     created_at        = models.DateTimeField(auto_now_add=True)
     updated_at        = models.DateTimeField(auto_now=True)    
     
     def __str__(self):
         return f"{self.id}"
+    
+    
     

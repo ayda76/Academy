@@ -73,3 +73,12 @@ class Term(models.Model):
     
     def __str__(self):
         return self.title
+    
+class Rating(models.Model):
+    rate              = models.PositiveIntegerField(default=1)
+    profile_related   = models.ForeignKey(Profile,related_name='ratings_profile',on_delete=models.CASCADE)
+    course_related    = models.ForeignKey(Course,related_name='ratings_course',on_delete=models.CASCADE)
+    created_at        = models.DateTimeField(auto_now_add=True)
+    updated_at        = models.DateTimeField(auto_now=True)  
+    def __str__(self):
+        return self.id
