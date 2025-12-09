@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import toast from "react-hot-toast";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
+import useUser from "../hooks/auth/useUser";
+import useCourseMe from "../hooks/courses/useCourseMe";
 
 const AddToCartButton = ({ id, name, price }) => {
   // const { user, isLoadingUser } = useUser();
-  const { myCourse, isLoadingCourse, isLoadingUser, user } = useAuth();
+  // const { myCourse, isLoadingCourse, isLoadingUser, user } = useAuth();
+  const { isLoadingUser, user } = useUser();
+  const { myCourse, isLoadingCourse } = useCourseMe();
   const { cartList, dispatch } = useCart();
   const course = !myCourse || myCourse === "error" ? [] : myCourse;
   const isEnroll = course?.some((c) => c?.id === id);
