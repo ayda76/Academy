@@ -7,12 +7,11 @@ const api = axios.create({
   withCredentials: true,
 });
 
-let accessToken = null;
-
 api.interceptors.request.use(
   (config) => {
+    let accessToken = localStorage.getItem("token");
     if (accessToken) {
-      config.headers["Authorization"] = accessToken;
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
     console.log(accessToken);
     return config;
@@ -31,25 +30,28 @@ api.interceptors.response.use(
       if (!refresh) {
         Cookies.remove("refresh");
         localStorage.removeItem("_appSignging");
-        accessToken = null;
+        localStorage.removeItem("token");
+        // accessToken = null;
         return Promise.reject(error);
       }
-
+      console.log(refresh);
       try {
         const refreshResponse = await api.post(
           `${BASE_URL}/auth/jwt/refresh/`,
           { refresh: refresh },
         );
-        accessToken = refreshResponse.data.access;
+        // accessToken = refreshResponse.data.access;
         localStorage.setItem("_appSignging", true);
+        localStorage.setItem("token", refreshResponse?.data?.access);
 
-        error.config.headers["Authorization"] = accessToken;
+        error.config.headers["Authorization"] = refreshResponse?.data?.access;
         return api(error.config);
       } catch (err) {
         console.log(err);
         Cookies.remove("refresh");
         localStorage.removeItem("_appSignging");
-        accessToken = null;
+        localStorage.removeItem("token");
+        // accessToken = null;
         return Promise.reject(err);
       }
     }
@@ -58,12 +60,14 @@ api.interceptors.response.use(
   },
 );
 
-export function setAccessToken(token) {
-  accessToken = token;
-}
+// export function setAccessToken(token) {
+//   console.log(token);
+//   accessToken = token;
+// }
 
 export function getAccessToken() {
-  return accessToken;
+  // return accessToken;
+  return localStorage.getItem("token");
 }
 
 export default api;
