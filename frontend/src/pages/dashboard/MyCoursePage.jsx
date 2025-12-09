@@ -1,7 +1,9 @@
+import { Outlet, useParams } from "react-router-dom";
 import MainMyCourse from "../../components/dashboard/course/MainMyCourse";
 
 const MyCoursePage = () => {
-  return <MainMyCourse />;
+  const { id } = useParams();
+  return id ? <Outlet /> : <MainMyCourse />;
 };
 
 export default MyCoursePage;
