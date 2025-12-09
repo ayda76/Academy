@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import Modal from "./Modal";
 import Cookies from "js-cookie";
-import { setAccessToken } from "../services/api";
+// import { setAccessToken } from "../services/api";
 import { useQueryClient } from "@tanstack/react-query";
 
 const ConfirmSignOut = ({ onClose }) => {
@@ -23,7 +23,8 @@ const ConfirmSignOut = ({ onClose }) => {
             onClick={() => {
               Cookies.remove("refresh");
               localStorage.removeItem("_appSignging");
-              setAccessToken(null);
+              localStorage.removeItem("token");
+              // setAccessToken(null);
               onClose();
               querClient.removeQueries();
               navigate("/auth");
