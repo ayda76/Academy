@@ -13,3 +13,9 @@ export async function createCommentApi(formData) {
 export async function deleteCommentApi(id) {
   return api.delete(`/api/comment/comment/${id}/`).then((res) => res?.data);
 }
+
+export async function editCommentApi({ id, formData }) {
+  return api
+    .patch(`/api/comment/comment/${id}/`, formData)
+    .then((res) => res?.data);
+}

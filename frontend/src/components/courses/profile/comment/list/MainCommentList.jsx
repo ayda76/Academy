@@ -4,12 +4,15 @@ import CommentItem from "./CommentItem";
 import Modal from "../../../../../ui/Modal";
 import MainCreateComment from "../create/MainCreateComment";
 import useUser from "../../../../../hooks/auth/useUser";
-import useAuth from "../../../../../hooks/useAuth";
+// import useAuth from "../../../../../hooks/useAuth";
+import useCourseMe from "../../../../../hooks/courses/useCourseMe";
 
 const MainCommentList = ({ courseName, courseId }) => {
   const { user } = useUser();
   const { comments, isLoadingCm, isFetching } = useGetCourseComment();
-  const { myCourse, isLoadingCourse, isLoadingUser } = useAuth();
+  // const { myCourse, isLoadingCourse, isLoadingUser } = useAuth();
+  // const { isLoadingUser } = useUser();
+  const { myCourse, isLoadingCourse } = useCourseMe();
   const course = !myCourse || myCourse === "error" ? [] : myCourse;
   const isEnroll = user?.firstname && course?.some((c) => c?.id === courseId);
   const [openCm, setOpenCm] = useState(false);
@@ -28,7 +31,7 @@ const MainCommentList = ({ courseName, courseId }) => {
         {isEnroll && (
           <button
             onClick={() => setOpenCm(true)}
-            className="text-sm text-purple-800"
+            className="text-sm text-purple-800 cursor-pointer"
           >
             ثبت دیدگاه
           </button>

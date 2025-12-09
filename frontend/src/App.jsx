@@ -17,9 +17,47 @@ import ChangePasswordPage from "./pages/dashboard/ChangePasswordPage";
 import AppLayout from "./layout/AppLayout";
 import EditUserPage from "./pages/dashboard/EditUserPage";
 import MyCoursePage from "./pages/dashboard/MyCoursePage";
+import MyCourseDetailsPage from "./pages/dashboard/MyCourseDetailsPage";
+// import { useEffect } from "react";
+// import Cookies from "js-cookie";
+// import api, { setAccessToken } from "./services/api";
+// import { useCart } from "./context/CartContext";
 
 function App() {
   const queryClient = new QueryClient();
+  // const _appSignging = localStorage.getItem("_appSignging");
+  // const refresh = Cookies.get("refresh");
+  // const { dispatch, test } = useCart();
+  // useEffect(() => {
+  //   const getToken = async () => {
+  //     console.log(refresh);
+  //     if (!refresh) {
+  //       Cookies.remove("refresh");
+  //       localStorage.removeItem("_appSignging");
+  //       setAccessToken(null);
+  //       console.log("no refresh");
+  //       return;
+  //     }
+  //     try {
+  //       const refreshResponse = await api.post(`/auth/jwt/refresh/`, {
+  //         refresh: refresh,
+  //       });
+  //       console.log("44", refreshResponse);
+  //       setAccessToken(refreshResponse.data.access);
+  //       localStorage.setItem("_appSignging", true);
+  //       dispatch({ type: "setTest", payload: refreshResponse.data.access });
+  //     } catch (err) {
+  //       console.log(err);
+  //       Cookies.remove("refresh");
+  //       localStorage.removeItem("_appSignging");
+  //       setAccessToken(null);
+  //       return Promise.reject(err);
+  //     }
+  //   };
+  //   getToken();
+  //   console.log("refresh app");
+  // }, [refresh, _appSignging]);
+  // console.log(test);
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
@@ -37,7 +75,9 @@ function App() {
           <Route path="user" element={<UserPage />} />
           <Route path="user/edit" element={<EditUserPage />} />
           <Route path="change-password" element={<ChangePasswordPage />} />
-          <Route path="course" element={<MyCoursePage />} />
+          <Route path="course" element={<MyCoursePage />}>
+            <Route path=":id" element={<MyCourseDetailsPage />} />
+          </Route>
         </Route>
         {/* public routes */}
         <Route element={<AppLayout />}>

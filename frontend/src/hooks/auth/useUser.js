@@ -12,9 +12,9 @@ export default function useUser() {
     queryFn: userMeApi,
     retry: false,
     staleTime: 5 * 60 * 1000,
-    refetchOnMount:false,
+    refetchOnMount: false,
     enabled: !!appSignging,
-    throwOnError:(err)=>console.log(err)
+    throwOnError: (err) => console.log(err),
   });
   return { user, isLoadingUser, isPending };
 }

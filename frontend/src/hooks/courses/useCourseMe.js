@@ -3,7 +3,7 @@ import { courseMeAPi } from "../../services/courseServices";
 import { getAccessToken } from "../../services/api";
 
 export default function useCourseMe() {
-  // const appSignging = localStorage.getItem("_appSignging") || false;
+  const appSignging = localStorage.getItem("_appSignging") || false;
   const token = getAccessToken();
   const { data: myCourse, isLoading: isLoadingCourse } = useQuery({
     queryKey: ["course-me"],
@@ -11,6 +11,7 @@ export default function useCourseMe() {
     staleTime: 5 * 60 * 1000,
     refetchOnMount: false,
     enabled: !!token,
+    // enabled: !!appSignging,
     retry: false,
     throwOnError: (err) => console.log(err),
   });

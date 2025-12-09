@@ -4,16 +4,22 @@ import useCreateComment from "../../../../../hooks/comment/useCreateComment";
 import SubmitButton from "../../../../../ui/SubmitButton";
 import TextAreaField from "../../../../../ui/TextAreaField";
 import { useForm } from "react-hook-form";
+import useEditComment from "../../../../../hooks/comment/useEditComment";
 
-const MainCreateComment = ({ onClose }) => {
+const MainCreateComment = ({ onClose, text, commentId }) => {
   const { id } = useParams();
   const { user } = useUser();
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      text: text || "",
+    },
+  });
   const { cretaeCommentFn, isCreating } = useCreateComment();
+  const { editCommentFn, isEdting } = useEditComment();
   const onSubmit = (data) => {
     const formData = {
       ...data,
@@ -22,11 +28,22 @@ const MainCreateComment = ({ onClose }) => {
       object_id: id,
     };
     console.log(formData);
-    cretaeCommentFn(formData, {
-      onSuccess: () => {
-        onClose();
-      },
-    });
+    if (commentId) {
+      editCommentFn(
+        { id: commentId, formData },
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        },
+      );
+    } else {
+      cretaeCommentFn(formData, {
+        onSuccess: () => {
+          onClose();
+        },
+      });
+    }
   };
   return (
     <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
@@ -40,7 +57,9 @@ const MainCreateComment = ({ onClose }) => {
           required: "این فیلد الزامی است.",
         }}
       />
-      <SubmitButton disabled={isCreating}>ثبت</SubmitButton>
+      <SubmitButton disabled={isCreating || isEdting}>
+        <span>{commentId ? "ویرایش" : "ثبت"}</span>
+      </SubmitButton>
     </form>
   );
 };

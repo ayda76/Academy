@@ -6,6 +6,7 @@ export default function useGetOrganization() {
     queryKey: ["get-organization"],
     queryFn: getOrganizationApi,
     throwOnError: (err) => console.log(err),
+    retry: false,
   });
   return { organization, isLoadingOrg };
 }

@@ -53,14 +53,24 @@ export default function PriceRangeSlider({
           value={maxValue}
           onChange={handleMaxChange}
           className="absolute w-full top-0 h-4 pointer-events-none
-                     appearance-none bg-transparent
-                     [&::-webkit-slider-thumb]:appearance-none
-                     [&::-webkit-slider-thumb]:h-4
-                     [&::-webkit-slider-thumb]:w-4
-                     [&::-webkit-slider-thumb]:rounded-full
-                     [&::-webkit-slider-thumb]:bg-purple-600
-                     [&::-webkit-slider-thumb]:pointer-events-auto
-                     [&::-webkit-slider-thumb]:cursor-pointer"
+                      appearance-none bg-transparent
+                      [&::-webkit-slider-thumb]:appearance-none
+                      [&::-webkit-slider-thumb]:h-4
+                      [&::-webkit-slider-thumb]:w-4
+                      [&::-webkit-slider-thumb]:rounded-full
+                      [&::-webkit-slider-thumb]:bg-purple-600
+                      [&::-webkit-slider-thumb]:pointer-events-auto
+                      [&::-webkit-slider-thumb]:cursor-pointer
+                     /* Firefox */
+                      [&::-moz-range-thumb]:h-4
+                      [&::-moz-range-thumb]:w-4
+                      [&::-moz-range-thumb]:rounded-full
+                      [&::-moz-range-thumb]:bg-purple-600
+                      [&::-moz-range-thumb]:pointer-events-auto
+                      [&::-moz-range-thumb]:cursor-pointer
+                      [&::-moz-range-thumb]:border-0
+
+                      [&::-moz-range-track]:bg-transparent"
         />
 
         {/* دسته سمت چپ */}
@@ -71,14 +81,24 @@ export default function PriceRangeSlider({
           value={minValue}
           onChange={handleMinChange}
           className="absolute w-full top-0 h-4 pointer-events-none
-                     appearance-none bg-transparent
-                     [&::-webkit-slider-thumb]:appearance-none
-                     [&::-webkit-slider-thumb]:h-4
-                     [&::-webkit-slider-thumb]:w-4
-                     [&::-webkit-slider-thumb]:rounded-full
-                     [&::-webkit-slider-thumb]:bg-purple-600
-                     [&::-webkit-slider-thumb]:pointer-events-auto
-                     [&::-webkit-slider-thumb]:cursor-pointer"
+                      appearance-none bg-transparent
+                      [&::-webkit-slider-thumb]:appearance-none
+                      [&::-webkit-slider-thumb]:h-4
+                      [&::-webkit-slider-thumb]:w-4
+                      [&::-webkit-slider-thumb]:rounded-full
+                      [&::-webkit-slider-thumb]:bg-purple-600
+                      [&::-webkit-slider-thumb]:pointer-events-auto
+                      [&::-webkit-slider-thumb]:cursor-pointer
+                     /* Firefox */
+                      [&::-moz-range-thumb]:h-4
+                      [&::-moz-range-thumb]:w-4
+                      [&::-moz-range-thumb]:rounded-full
+                      [&::-moz-range-thumb]:bg-purple-600
+                      [&::-moz-range-thumb]:pointer-events-auto
+                      [&::-moz-range-thumb]:cursor-pointer
+                      [&::-moz-range-thumb]:border-0
+
+                      [&::-moz-range-track]:bg-transparent"
         />
       </div>
     </div>

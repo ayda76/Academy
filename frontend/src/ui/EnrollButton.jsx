@@ -2,12 +2,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import useEnroll from "../hooks/courses/useEnroll";
+import useUser from "../hooks/auth/useUser";
+import useCourseMe from "../hooks/courses/useCourseMe";
 
-const EnrollButton = ({ courseId, courseName }) => {
+const EnrollButton = ({ courseId, courseName, has_term, termId }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   console.log(pathname);
-  const { myCourse, isLoadingCourse, isLoadingUser, user } = useAuth();
+  // const { myCourse, isLoadingCourse, isLoadingUser, user } = useAuth();
+  const { isLoadingUser, user } = useUser();
+  const { myCourse, isLoadingCourse } = useCourseMe();
   const course = !myCourse || myCourse === "error" ? [] : myCourse;
   const isEnroll = course?.some((c) => c?.id === courseId);
   const { enrollCourseFn, isPending } = useEnroll();
@@ -23,11 +27,12 @@ const EnrollButton = ({ courseId, courseName }) => {
       return;
     }
     const formData = {
-      term_id: courseId,
+      term_id: termId,
     };
+    console.log(formData);
     enrollCourseFn(formData, {
       onSuccess: () => {
-        toast.success(`دوره ${courseName} باموفقیت ثیت‌نام شد`);
+        toast.success(`دوره ${courseName} باموفقیت ثبت‌نام شد`);
         navigate("/dashboard/course");
       },
     });
@@ -42,7 +47,7 @@ const EnrollButton = ({ courseId, courseName }) => {
             شما دانشجو دوره هستید
           </span>
         </div>
-      ) : (
+      ) : has_term ? (
         <button
           onClick={enrollHandler}
           disabled={isPending}
@@ -50,6 +55,12 @@ const EnrollButton = ({ courseId, courseName }) => {
         >
           <span className="text-xs text-white md:text-sm">ثبت‌نام</span>
         </button>
+      ) : (
+        <div className="w-full p-1.5 rounded-xl text-center bg-purple-900">
+          <span className="text-xs text-white md:text-sm">
+            مهلت ثبت‌نام تمام شده
+          </span>
+        </div>
       )}
     </div>
   );

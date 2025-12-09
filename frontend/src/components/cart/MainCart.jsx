@@ -7,31 +7,35 @@ import { PiArrowLeftLight } from "react-icons/pi";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import Loading from "../../ui/Loading";
-import useAuth from "../../hooks/useAuth";
+// import useAuth from "../../hooks/useAuth";
+import useUser from "../../hooks/auth/useUser";
+import useCourseMe from "../../hooks/courses/useCourseMe";
 
 const MainCart = () => {
   const { cartList, cartCount, dispatch } = useCart();
   const moveBack = useMoveBack();
-  const { myCourse, isLoadingCourse, isLoadingUser } = useAuth();
+  // const { myCourse, isLoadingCourse, isLoadingUser } = useAuth();
+  const { isLoadingUser } = useUser();
+  const { myCourse, isLoadingCourse } = useCourseMe();
   const course = !myCourse || myCourse === "error" ? [] : myCourse;
   console.log(course);
-  let isEnroll = cartList.filter((cart) =>
-    course.some((c) => c.id === cart.id),
+  let isEnroll = cartList?.filter((cart) =>
+    course?.some((c) => c.id === cart.id),
   );
 
-  let isNotEnroll = cartList.filter(
-    (cart) => !course.some((c) => c.id === cart.id),
+  let isNotEnroll = cartList?.filter(
+    (cart) => !course?.some((c) => c.id === cart.id),
   );
   console.log(isNotEnroll, isEnroll);
   useEffect(() => {
-    if (isLoadingCourse) return; // هنوز API لود نشده
+    if (isLoadingCourse || isLoadingUser) return; // هنوز API لود نشده
     if (!course) return; // هنوز به دست نیومده
     if (isEnroll.length === 0) return;
     isEnroll.forEach((enroll) => {
       toast.error(`دوره ${enroll?.name} قبلا ثبت‌نام شده`);
     });
     dispatch({ type: "removeIsEnrollCourse", payload: isNotEnroll });
-  }, [isLoadingCourse, course, isEnroll, isNotEnroll]);
+  }, [isLoadingCourse, course, isEnroll, isNotEnroll, isLoadingUser]);
 
   const totalPrice = isNotEnroll?.reduce((prev, acc) => +prev + +acc?.price, 0);
   return isLoadingCourse || isLoadingUser ? (
