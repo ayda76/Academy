@@ -13,13 +13,17 @@ const CommentItem = ({ comment, commentHasOrigin }) => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openReply, setOpenReply] = useState(false);
+  const [originId, setOriginId] = useState(null);
   return (
     <div className="bg-purple-100/50 rounded-md p-4 space-y-2">
       {openDelete && (
         <Modal title={"حذف دیدگاه"} onClose={() => setOpenDelete(false)}>
           <ConfirmDeleteComment
-            id={comment?.id}
-            onClose={() => setOpenDelete(false)}
+            id={originId ? originId : comment?.id}
+            onClose={() => {
+              setOpenDelete(false);
+              setOriginId(null);
+            }}
           />
         </Modal>
       )}
@@ -88,13 +92,16 @@ const CommentItem = ({ comment, commentHasOrigin }) => {
                     " " +
                     cm?.profile_related?.lastname}
                 </span>
-                {/* {cm?.profile_related?.id === user?.id && (
+                {cm?.profile_related?.id === user?.id && (
                   <PiTrash
-                    onClick={() => setOpenDelete(true)}
+                    onClick={() => {
+                      setOriginId(cm?.id);
+                      setOpenDelete(true);
+                    }}
                     className="cursor-pointer text-error"
                     title="حذف"
                   />
-                )} */}
+                )}
               </div>
               <p className="text-sm text-secondary-800">{cm?.text}</p>
             </div>
