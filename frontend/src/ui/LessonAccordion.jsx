@@ -35,7 +35,7 @@ const LessonAccordion = ({ lesson, index, isEnroll }) => {
                 href={article?.file_doc}
                 download={article?.file_doc}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 text-secondary-600"
               >
                 <PiArticle className="text-xl" />
@@ -49,7 +49,7 @@ const LessonAccordion = ({ lesson, index, isEnroll }) => {
                 href={lesson?.video}
                 download={lesson?.video}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 text-secondary-600"
               >
                 <PiVideo className="text-xl" />
@@ -59,6 +59,7 @@ const LessonAccordion = ({ lesson, index, isEnroll }) => {
                 src={lesson?.video}
                 controls
                 className="max-w-[400px] aspect-video"
+                preload="none"
               ></video>
             </>
           )}
