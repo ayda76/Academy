@@ -6,7 +6,13 @@ import TextAreaField from "../../../../../ui/TextAreaField";
 import { useForm } from "react-hook-form";
 import useEditComment from "../../../../../hooks/comment/useEditComment";
 
-const MainCreateComment = ({ onClose, text, commentId }) => {
+const MainCreateComment = ({
+  onClose,
+  text,
+  origin = null,
+  commentId,
+  isReply = false,
+}) => {
   const { id } = useParams();
   const { user } = useUser();
   const {
@@ -26,6 +32,7 @@ const MainCreateComment = ({ onClose, text, commentId }) => {
       content_type: "course_app.course",
       profile_related: user?.id,
       object_id: id,
+      origin,
     };
     console.log(formData);
     if (commentId) {
