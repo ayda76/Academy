@@ -10,6 +10,9 @@ import useCourseMe from "../../../../../hooks/courses/useCourseMe";
 const MainCommentList = ({ courseName, courseId }) => {
   const { user } = useUser();
   const { comments, isLoadingCm, isFetching } = useGetCourseComment();
+  console.log(comments);
+  const commentHasOrigin = comments?.filter((cm) => cm?.origin);
+  const commentPrimary = comments?.filter((cm) => !cm?.origin);
   // const { myCourse, isLoadingCourse, isLoadingUser } = useAuth();
   // const { isLoadingUser } = useUser();
   const { myCourse, isLoadingCourse } = useCourseMe();
@@ -44,8 +47,12 @@ const MainCommentList = ({ courseName, courseId }) => {
           دیدگاهی برای این دوره ثبت نشده است.
         </p>
       ) : (
-        comments?.map((comment) => (
-          <CommentItem key={comment?.id} comment={comment} />
+        commentPrimary?.map((comment) => (
+          <CommentItem
+            key={comment?.id}
+            comment={comment}
+            commentHasOrigin={commentHasOrigin}
+          />
         ))
       )}
     </div>

@@ -13,6 +13,7 @@ export default function useGetCourseComment() {
     queryFn: () => getCourseCommentApi(id),
     enabled: !!id,
     retry: false,
+    placeholderData: [],
   });
   return { comments, isLoadingCm, isFetching };
 }
