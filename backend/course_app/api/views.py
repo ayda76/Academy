@@ -2,7 +2,7 @@ from rest_framework import generics, viewsets
 from rest_framework.response import Response
 
 from course_app.api.serializers import *
-from profile_app.models import Profile,ProfileOfflineCourse
+from profile_app.models import Profile,ProfileDetail
 from course_app.models import *
 
 from django.utils.decorators import method_decorator

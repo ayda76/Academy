@@ -5,7 +5,7 @@ from django.urls import path , include ,re_path
 
 router = DefaultRouter()
 router.register("profile", ProfileViewSet)
-router.register("ProfileOfflineCourse", ProfileOfflineCourseViewSet)
+router.register("ProfileDetail", ProfileDetailViewSet)
 router.register("instructorProfileDetail", InstructorProfileDetailViewSet)
 
 

@@ -66,9 +66,12 @@ class InstructorProfileDetail(models.Model):
     def __str__(self) :
         return f"{self.about}"
     
-class ProfileOfflineCourse(models.Model):
+class ProfileDetail(models.Model):
     from course_app.models import Course
-    profile_related  = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile_offlinecourses" )
-    offline_course   = models.ManyToManyField(Course, related_name='profileOfflineCourses',blank=True, null=True)
+    profile_related  = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile_detail" )
+    all_course       = models.ManyToManyField(Course, related_name='profileAllCourses',blank=True, null=True)
+    about            = models.TextField(blank=True, null=True)
+    social_link      = models.CharField(max_length=1000, blank=True, null=True)
     def __str__(self) :
-        return f"{self.about}"
+        return f"{self.id}"
+    
