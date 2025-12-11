@@ -10,3 +10,8 @@ class ProfileResource(resources.ModelResource):
 class InstructorProfileDetailResource(resources.ModelResource):
      class Meta:
           model = InstructorProfileDetail
+
+class ProfileDetailResource(resources.ModelResource):
+     class Meta:
+          model = ProfileDetail
+

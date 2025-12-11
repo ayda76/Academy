@@ -49,11 +49,21 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+class ProfileMeSerializer(serializers.ModelSerializer):
+    all_courses=serializers.SerializerMethodField()
+    class Meta:
+        model = Profile
+        fields = '__all__'
+    def get_all_courses(self,obj):
+        courses=ProfileDetail.objects.filter(profile_related=obj).values('all_course')
+        list_courses=[]
+        [list_courses.append(course['all_course']) for course in courses]
+        return list_courses
  
-class ProfileOfflineCourseSerializer(serializers.ModelSerializer):
+class ProfileDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = ProfileOfflineCourse
+        model = ProfileDetail
         fields = '__all__'       
 
 class InstructorProfileDetailSerializer(serializers.ModelSerializer):

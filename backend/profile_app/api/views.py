@@ -98,13 +98,13 @@ class InstructorProfileDetailViewSet(viewsets.ModelViewSet):
 class ProfileMeViewSet(generics.ListAPIView):
     
     my_tags = ["Profile"]
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileMeSerializer
     pagination_class=None
     
     def get(self,request):
         
         profileSelected = Profile.get_user_jwt( self,request )
-        serializer = ProfileSerializer(profileSelected)
+        serializer = ProfileMeSerializer(profileSelected)
         return Response(serializer.data)
         
 class PasswordChangeView(APIView):
@@ -134,9 +134,9 @@ class PasswordChangeView(APIView):
             return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
         
-class ProfileOfflineCourseViewSet(viewsets.ModelViewSet):
-    queryset = ProfileOfflineCourse.objects.select_related('profile_related').prefetch_related('offline_course')
-    serializer_class = ProfileOfflineCourseSerializer
+class ProfileDetailViewSet(viewsets.ModelViewSet):
+    queryset = ProfileDetail.objects.select_related('profile_related').prefetch_related('offline_course')
+    serializer_class = ProfileDetailSerializer
     pagination_class=None
     my_tags = ["Profile"]     
     
@@ -146,9 +146,9 @@ class ProfileOfflineCourseViewSet(viewsets.ModelViewSet):
         from course_app.api.serializers import CourseSerializer
         try:
             profileSelected=Profile.get_user_jwt(self,request)
-            offline_courses=ProfileOfflineCourse.objects.filter(profile_related=profileSelected).values('offline_course')
+            all_courses=ProfileDetail.objects.filter(profile_related=profileSelected).values('all_course')
             list_courses=[]
-            [list_courses.append(Course.objects.get(id=course['offline_course'])) for course in offline_courses]
+            [list_courses.append(Course.objects.get(id=course['all_course'])) for course in all_courses]
             
             return Response(CourseSerializer(list_courses,many=True).data)
         except:

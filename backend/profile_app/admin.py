@@ -19,3 +19,9 @@ class InstructorProfileDetailAdmin(ImportExportModelAdmin):
 
     list_display = ('id','profile_related','teaching_field' )
     resource_class = InstructorProfileDetailResource   
+
+@admin.register(ProfileDetail)
+class ProfileDetailAdmin(ImportExportModelAdmin):
+
+    list_display = ('id','profile_related' )
+    resource_class = ProfileDetailResource   
