@@ -7,7 +7,8 @@ from datetime import datetime, date
 
 class Organization(models.Model):
     name     = models.CharField(max_length=500, blank=True, null=True)
-    phone    = PhoneNumberField(blank=True, null=True)
+    phone    = models.DecimalField(blank=True , null=True, max_digits=11, decimal_places=0)
+    
     address  = models.CharField(max_length=500, blank=True, null=True)
     
     def __str__(self):

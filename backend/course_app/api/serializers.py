@@ -30,7 +30,13 @@ class TermSimpleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Term
-        fields='__all__'       
+        fields='__all__'      
+        
+class CourseSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Course
+        fields='__all__' 
+        
 class CourseSerializer(serializers.ModelSerializer):
     lessons_related=LessonSerializer(many=True,read_only=True)
     organization=OrganizationSimpleSerializer(read_only=True)
@@ -51,7 +57,7 @@ class CourseSerializer(serializers.ModelSerializer):
   
   
 class OrganizationSerializer(serializers.ModelSerializer):
-    courses_organization=CourseSerializer(required=False,read_only=True)
+    courses_organization=CourseSimpleSerializer(required=False,read_only=True, many=True)
     class Meta:
         model=Organization
         fields='__all__'

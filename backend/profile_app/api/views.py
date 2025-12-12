@@ -61,13 +61,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def CoursesMe(self, request):
-        from course_app.models import Term,Course
+        from course_app.models import Course
         try:
             profileSelected=Profile.get_user_jwt(self,request)
-            courses=Term.objects.filter(students=profileSelected).values('course_related')
+            courses=ProfileDetail.objects.filter(profile_related=profileSelected).values('all_course')
             courseList=[]
             for cr in courses:
-                courseList.append(Course.objects.get(id=cr['course_related']))
+                courseList.append(Course.objects.get(id=cr['all_course']))
             serialized_courses=CourseSerializer(courseList,many=True).data
             return Response(serialized_courses)
         except:
@@ -140,18 +140,5 @@ class ProfileDetailViewSet(viewsets.ModelViewSet):
     pagination_class=None
     my_tags = ["Profile"]     
     
-    @action(detail=False, methods=['get'])
-    def OfflineCourseMe(self, request):
-        from course_app.models import Course
-        from course_app.api.serializers import CourseSerializer
-        try:
-            profileSelected=Profile.get_user_jwt(self,request)
-            all_courses=ProfileDetail.objects.filter(profile_related=profileSelected).values('all_course')
-            list_courses=[]
-            [list_courses.append(Course.objects.get(id=course['all_course'])) for course in all_courses]
-            
-            return Response(CourseSerializer(list_courses,many=True).data)
-        except:
-            return Response('error')
-        
+
        

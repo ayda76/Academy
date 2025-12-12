@@ -9,7 +9,7 @@ from .models import *
 @admin.register(Organization)
 class OrganizationAdmin(ImportExportModelAdmin):
 
-    list_display = ('id',)
+    list_display = ('name',)
 
 
     resource_class = OrganizationResource
