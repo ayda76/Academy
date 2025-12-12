@@ -26,7 +26,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError, NotFound
 
 class OrganizationViewSet(viewsets.ModelViewSet):
-    queryset = Organization.objects.prefetch_related('courses_organization')
+    queryset = Organization.objects.prefetch_related('courses_organization').all()
     serializer_class = OrganizationSerializer
     pagination_class=None
     my_tags = ["Course"]
