@@ -1,17 +1,18 @@
 import { PiBooksLight, PiHouseLight, PiInfo } from "react-icons/pi";
 import NavLink from "../../ui/NavLink";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 const Navbar = ({ onClose }) => {
-  const { pathname } = useLocation();
-  const [prevPath, setPrevPath] = useState(pathname);
+  const location = useLocation();
+  console.log(location);
+  const [prevPath, setPrevPath] = useState(location?.pathname);
   useEffect(() => {
-    if (prevPath !== pathname) {
+    if (prevPath !== location?.pathname) {
       onClose(); // اول ببند
-      setPrevPath(pathname); // بعد مسیر جدید را ذخیره کن
+      setPrevPath(location?.pathname); // بعد مسیر جدید را ذخیره کن
     }
-  }, [pathname]);
+  }, [location?.pathname]);
 
   return (
     <nav>

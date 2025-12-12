@@ -1,36 +1,44 @@
-import { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 
+const CartContext = createContext();
 const loadCart = () => {
   try {
     const saved = localStorage.getItem("academy_cart");
-    return saved ? JSON.parse(saved) : null;
+    return saved
+      ? JSON.parse(saved)
+      : {
+          cartList: [],
+          cartCount: 0,
+        };
   } catch {
-    return null;
+    return {
+      cartList: [],
+      cartCount: 0,
+    };
   }
 };
-
 const INITIAL_STATE = loadCart() || {
   cartList: [],
   cartCount: 0,
 };
-
+console.log(INITIAL_STATE);
 const cartReducer = (state, action) => {
   switch (action.type) {
     case "addedToCart": {
-      const newList = [...state.cartList, action.payload];
+      const newList = [...state?.cartList, action?.payload];
       localStorage.setItem(
         "academy_cart",
         JSON.stringify({
           ...state,
           cartList: newList,
-          cartCount: newList.length,
+          cartCount: newList?.length,
         }),
       );
 
       return {
         ...state,
         cartList: newList,
-        cartCount: newList.length,
+        cartCount: newList?.length,
       };
     }
 
@@ -41,38 +49,41 @@ const cartReducer = (state, action) => {
         JSON.stringify({
           ...state,
           cartList: newList,
-          cartCount: newList.length,
+          cartCount: newList?.length,
         }),
       );
 
       return {
         ...state,
         cartList: newList,
-        cartCount: newList.length,
+        cartCount: newList?.length,
       };
     }
 
     case "removeFromCart": {
-      const newList = state.cartList?.filter((cart) => cart?.id !== action.id);
+      const newList = state?.cartList?.filter((cart) => cart?.id !== action.id);
       localStorage.setItem(
         "academy_cart",
         JSON.stringify({
           ...state,
           cartList: newList,
-          cartCount: newList.length,
+          cartCount: newList?.length,
         }),
       );
 
       return {
         ...state,
         cartList: newList,
-        cartCount: newList.length,
+        cartCount: newList?.length,
       };
     }
 
     case "payment": {
       localStorage.removeItem("academy_cart");
-      return INITIAL_STATE;
+      return {
+        cartList: [],
+        cartCount: 0,
+      };
     }
 
     default:
@@ -80,16 +91,14 @@ const cartReducer = (state, action) => {
   }
 };
 
-const CartContext = createContext();
-
 export default function CartContextProvider({ children }) {
-  const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+  const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE, loadCart);
 
   return (
     <CartContext.Provider
       value={{
-        cartList: state.cartList,
-        cartCount: state.cartCount,
+        cartList: state?.cartList || [],
+        cartCount: state?.cartCount || 0,
         dispatch,
       }}
     >
