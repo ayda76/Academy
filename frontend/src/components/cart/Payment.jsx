@@ -14,13 +14,15 @@ const Payment = ({ isLoadingCourse, totalPrice }) => {
   const { enrollOfflineFn, isPending } = useEnrollOfflineCourse();
   const paymentFn = () => {
     const formData = {
-      profile_related: user?.id,
-      offline_course: courseIds,
+      // profile_related: user?.id,
+      // offline_course: courseIds,
+      course_ids: courseIds.join(","),
     };
+    console.log(formData);
     enrollOfflineFn(formData, {
       onSuccess: () => {
         dispatch({ type: "payment" });
-        navigate("/dahsboard/mycourse");
+        navigate("/dashboard/course");
       },
     });
   };

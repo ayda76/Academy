@@ -17,7 +17,7 @@ const MainCommentList = ({ courseName, courseId }) => {
   // const { isLoadingUser } = useUser();
   const { myCourse, isLoadingCourse } = useCourseMe();
   const course = !myCourse || myCourse === "error" ? [] : myCourse;
-  const isEnroll = user?.firstname && course?.some((c) => c?.id === courseId);
+  // const isEnroll = user?.firstname && course?.some((c) => c?.id === courseId);
   const [openCm, setOpenCm] = useState(false);
   return (
     <div className="space-y-4 w-full md:w-[80%]">
@@ -31,7 +31,7 @@ const MainCommentList = ({ courseName, courseId }) => {
       )}
       <div className="flex items-center justify-between">
         <h5 className="font-semibold text-secondary-900">دیدگاه</h5>
-        {isEnroll && (
+        {user?.firstname && (
           <button
             onClick={() => setOpenCm(true)}
             className="text-sm text-purple-800 cursor-pointer"
