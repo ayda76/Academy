@@ -105,8 +105,8 @@ class BuyCourse(CreateAPIView):
             list_ids=[]
             [list_ids.append(Course.objects.get(id=int(cr_id))) for cr_id in list_courseIds]
         with transaction.atomic(): 
-            Variable, Created =ProfileOfflineCourse.objects.update_or_create(profile_related=profileSelected)
-            Variable.offline_course.set(list_ids)
+            Variable, Created =ProfileDetail.objects.update_or_create(profile_related=profileSelected)
+            Variable.all_course.set(list_ids)
             Variable.save()
             return Response('successfully submitted')
             
@@ -127,9 +127,12 @@ class Enroll(CreateAPIView):
         with transaction.atomic():    
             termSelected=Term.objects.select_for_update().get(id=term_id)
             if termSelected.has_capacity ==True and termSelected.valid_enroll_time ==True and profileSelected not in termSelected.students.all():
-               
+                
                 termSelected.students.add(profileSelected)
                 transaction.on_commit(partial(send_confirmation_email_enroll.delay,course_name=termSelected.course_related.name,term_start=termSelected.start_date,user_email=profileSelected.email))
+                Variable, Created =ProfileDetail.objects.update_or_create(profile_related=profileSelected)
+                Variable.all_course.add(termSelected.course_related)
+                Variable.save()
                 # transaction.on_commit(
                 # lambda: send_confirmation_email_enroll.delay(
                 #  course_id=termSelected.course_related.id,
