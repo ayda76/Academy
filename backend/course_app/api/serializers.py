@@ -42,6 +42,7 @@ class CourseSerializer(serializers.ModelSerializer):
     organization=OrganizationSimpleSerializer(read_only=True)
     latest_term=serializers.SerializerMethodField()
     has_term=serializers.SerializerMethodField()
+    rating_score=serializers.SerializerMethodField()
     class Meta:
         model=Course
         fields='__all__'
@@ -54,6 +55,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_has_term(self,obj):
         return obj.has_term  
+    def get_rating_score(self,obj):
+        return obj.rating_score
   
   
 class OrganizationSerializer(serializers.ModelSerializer):

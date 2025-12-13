@@ -43,6 +43,17 @@ class Course(models.Model):
     def has_term(self):
         return any(term.valid_enroll_time for term in self.terms.all())
     
+    @property
+    def rating_score(self):
+        all_ratings=0
+        for rate in self.ratings_course.all() :
+            all_ratings+=rate.rate
+        if len(self.ratings_course.all())>0:
+            
+            return all_ratings/(len(self.ratings_course.all()))
+        return 0
+    
+    
     
 class Term(models.Model):
     title                  = models.CharField(max_length=800, blank=True, null=True)
@@ -82,4 +93,4 @@ class Rating(models.Model):
     created_at        = models.DateTimeField(auto_now_add=True)
     updated_at        = models.DateTimeField(auto_now=True)  
     def __str__(self):
-        return self.id
+        return str(self.id)

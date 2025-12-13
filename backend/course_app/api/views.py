@@ -24,6 +24,7 @@ from comment_app.models import Comment
 from comment_app.api.serializers import *
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError, NotFound
+from django.db.models import Avg
 
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.prefetch_related('courses_organization').all()
@@ -72,6 +73,10 @@ class CourseViewSet(viewsets.ModelViewSet):
             return Response(serialized_comments)
         except:
             return Response('error')
+    @action(detail=False,methods=['get'])
+    def PopularCourses(self,request):
+        courses_selected=(self.queryset.annotate(ratingScore=Avg('ratings_course__rate')).filter(ratingScore__gte=4))
+        return Response(CourseSerializer(courses_selected,many=True).data)
 
 
 class TermViewSet(viewsets.ModelViewSet):
