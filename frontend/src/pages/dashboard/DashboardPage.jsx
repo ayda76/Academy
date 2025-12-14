@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import useUser from "../../hooks/auth/useUser";
 import DashboardPanelLayout from "../../layout/DashboardPanelLayout";
 import { useEffect, useState } from "react";
@@ -7,14 +7,17 @@ import MainSideBar from "../../components/dashboard/sidebar/MainSideBar";
 import ModalSideBar from "../../ui/ModalSideBar";
 
 const DashboardPage = () => {
-  const navigate = useNavigate();
+  // const appSignging = localStorage.getItem("_appSignging") || false;
+  // console.log(appSignging);
   const [open, setOpen] = useState(false);
-  const appSignging = localStorage.getItem("_appSignging") || false;
+  const navigate = useNavigate();
+
   const { user, isLoadingUser, isPending } = useUser();
   console.log(user, isLoadingUser);
   useEffect(() => {
-    if (isPending && appSignging) return;
-    if (!appSignging) {
+    // if (isPending && appSignging) return;
+    if (isLoadingUser) return;
+    if (!user?.id) {
       navigate("/auth", { replace: true });
       return;
     }
@@ -22,11 +25,11 @@ const DashboardPage = () => {
       navigate("/auth/complete-profile", { replace: true });
       return;
     }
-  }, [isPending, appSignging, user]);
-  if (isPending && appSignging) return <Loading />;
+  }, [isLoadingUser, user]);
+  if (isLoadingUser) return <Loading />;
   return (
-    !isPending &&
-    appSignging && (
+    !isLoadingUser &&
+    user?.firstname && (
       <DashboardPanelLayout openMenu={() => setOpen(true)}>
         <div className="hidden md:flex">
           <MainSideBar onClose={() => setOpen(false)} />
