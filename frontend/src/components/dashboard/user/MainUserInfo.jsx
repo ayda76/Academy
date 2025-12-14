@@ -1,19 +1,18 @@
 import { BiBookAdd, BiLogoGmail, BiMap, BiPhone } from "react-icons/bi";
 import useUser from "../../../hooks/auth/useUser";
 import Loading from "../../../ui/Loading";
-import useCourseMe from "../../../hooks/courses/useCourseMe";
 import { Link } from "react-router-dom";
 
 const MainUserInfo = () => {
-  const { user } = useUser();
-  const { myCourse, isLoadingCourse } = useCourseMe();
-  const course = !myCourse || myCourse === "error" ? [] : myCourse;
-  console.log(course,myCourse);
-  return isLoadingCourse ? (
+  const { user, isLoadingUser } = useUser();
+  return isLoadingUser ? (
     <Loading />
   ) : (
     <div className="flex flex-col gap-4 px-5">
-      <Link to={"edit"} className="text-sm mb-5 text-primary-800 border border-primary-800 w-fit p-1.5 rounded-lg">
+      <Link
+        to={"edit"}
+        className="text-sm mb-5 text-primary-800 border border-primary-800 w-fit p-1.5 rounded-lg"
+      >
         ویرایش اطلاعات
       </Link>
       <div className="flex gap-4">
@@ -54,7 +53,9 @@ const MainUserInfo = () => {
             دوره‌های ثبت‌نام شده :
           </span>
         </div>
-        <span className="text-secondary-800 text-sm">{course?.length}</span>
+        <span className="text-secondary-800 text-sm">
+          {user?.all_courses?.length}
+        </span>
       </div>
     </div>
   );

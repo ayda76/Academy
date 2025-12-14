@@ -1,19 +1,14 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import useEnroll from "../hooks/courses/useEnroll";
 import useUser from "../hooks/auth/useUser";
-import useCourseMe from "../hooks/courses/useCourseMe";
 
 const EnrollButton = ({ courseId, courseName, has_term, termId }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname);
-  // const { myCourse, isLoadingCourse, isLoadingUser, user } = useAuth();
   const { isLoadingUser, user } = useUser();
-  const { myCourse, isLoadingCourse } = useCourseMe();
-  const course = !myCourse || myCourse === "error" ? [] : myCourse;
-  const isEnroll = course?.some((c) => c?.id === courseId);
+  console.log(user);
+  const isEnroll = user?.all_courses?.some((id) => id === courseId);
   const { enrollCourseFn, isPending } = useEnroll();
 
   const enrollHandler = () => {
@@ -38,8 +33,8 @@ const EnrollButton = ({ courseId, courseName, has_term, termId }) => {
     });
   };
   return (
-    <div className="w-[200px] lg:w-full">
-      {isLoadingCourse || isLoadingUser ? (
+    <div className="w-50 lg:w-full">
+      {isLoadingUser ? (
         <div className="w-full p-4 rounded-xl bg-secondary-200 animate-pulse"></div>
       ) : user?.id && isEnroll ? (
         <div className="w-full p-1.5 rounded-xl text-center bg-purple-900">

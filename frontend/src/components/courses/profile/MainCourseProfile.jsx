@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import useUser from "../../../hooks/auth/useUser";
 import useCourseDetails from "../../../hooks/courses/useCourseDetails";
 import useMoveBack from "../../../hooks/useMoveBack";
 import Loading from "../../../ui/Loading";
@@ -9,6 +9,7 @@ import { PiArrowLeftLight } from "react-icons/pi";
 
 const MainCourseProfile = () => {
   const { course, isLoading } = useCourseDetails();
+  const { user, isLoadingUser } = useUser();
   console.log(course);
   const moveBack = useMoveBack();
 
@@ -51,7 +52,10 @@ const MainCourseProfile = () => {
             <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
               {/* ستون متن */}
               <div className="lg:col-span-2 space-y-8">
-                <p>این آموزش به صورت {course?.is_online?"آنلاین":"آفلاین"} برگزار میشود.</p>
+                <p>
+                  این آموزش به صورت {course?.is_online ? "آنلاین" : "آفلاین"}{" "}
+                  برگزار میشود.
+                </p>
                 {/* درس */}
                 <div className="flex flex-col gap-4">
                   <h5 className="font-semibold text-secondary-900">
@@ -101,6 +105,7 @@ const MainCourseProfile = () => {
                 </div>
                 {/* دیدگاه */}
                 <MainCommentList
+                  user={user}
                   courseName={course?.name}
                   courseId={course?.id}
                 />

@@ -24,7 +24,7 @@ import MyCourseDetailsPage from "./pages/dashboard/MyCourseDetailsPage";
 // import { useCart } from "./context/CartContext";
 
 function App() {
-  const queryClient = new QueryClient();
+  // const queryClient = new QueryClient();
   // const _appSignging = localStorage.getItem("_appSignging");
   // const refresh = Cookies.get("refresh");
   // const { dispatch, test } = useCart();
@@ -59,7 +59,7 @@ function App() {
   // }, [refresh, _appSignging]);
   // console.log(test);
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <Toaster />
       <Routes>
         {/* auth route */}
@@ -91,7 +91,7 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </QueryClientProvider>
+    </>
   );
 }
 

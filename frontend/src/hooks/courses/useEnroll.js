@@ -9,7 +9,7 @@ export default function useEnroll() {
     mutationFn: enrollApi,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["course-me"],
+        queryKey: ["user-me"],
       });
     },
     onError: (err) => {
