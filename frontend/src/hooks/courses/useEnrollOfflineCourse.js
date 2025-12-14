@@ -10,7 +10,7 @@ export default function useEnrollOfflineCourse() {
     onSuccess: () => {
       toast.success("خرید شما باموفقیت انجام شد");
       queryClient?.invalidateQueries({
-        queryKey: ["course-me"],
+        queryKey: ["user-me"],
       });
     },
     onError: (err) => {
