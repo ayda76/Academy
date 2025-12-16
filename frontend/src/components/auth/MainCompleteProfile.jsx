@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useUser from "../../hooks/auth/useUser";
 import TextField from "../../ui/TextField";

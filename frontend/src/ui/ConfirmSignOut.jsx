@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import Cookies from "js-cookie";
 // import { setAccessToken } from "../services/api";

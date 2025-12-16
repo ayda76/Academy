@@ -1,7 +1,7 @@
 import { PiBooksLight, PiHouseLight, PiInfo } from "react-icons/pi";
 import NavLink from "../../ui/NavLink";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 
 const Navbar = ({ onClose }) => {
   const location = useLocation();

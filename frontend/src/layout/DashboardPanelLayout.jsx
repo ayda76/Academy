@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 import DashboardHeader from "../ui/DashboardHeader";
 
 const DashboardPanelLayout = ({ children, openMenu }) => {
