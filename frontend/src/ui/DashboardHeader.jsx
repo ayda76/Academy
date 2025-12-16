@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { PiList, PiSignOut } from "react-icons/pi";
 import ProfileAvatar from "./ProfileAvatar";
 import useUser from "../hooks/auth/useUser";

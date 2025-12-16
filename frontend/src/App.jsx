@@ -1,8 +1,7 @@
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AuthLayout from "./pages/auth/AuthLayout";
 import SignInPage from "./pages/auth/signInPage";
 import SignUpPage from "./pages/auth/SignUpPage";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
