@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import useUser from "../../../hooks/auth/useUser";
 import useCourseDetails from "../../../hooks/courses/useCourseDetails";
 import useMoveBack from "../../../hooks/useMoveBack";
@@ -6,12 +7,16 @@ import MainCommentList from "./comment/list/MainCommentList";
 import CourseDetailsCard from "./CourseDetailsCard";
 import CourseLesson from "./CourseLesson";
 import { PiArrowLeftLight } from "react-icons/pi";
+import MainRating from "./rating/MainRating";
+// import Countdown from "./CountDown";
 
 const MainCourseProfile = () => {
+  const { id } = useParams();
+  const moveBack = useMoveBack();
   const { course, isLoading } = useCourseDetails();
   const { user, isLoadingUser } = useUser();
+  const isEnroll = user?.all_courses?.some((courseId) => +id === courseId);
   console.log(course);
-  const moveBack = useMoveBack();
 
   return (
     <div className="w-full min-h-screen">
@@ -21,6 +26,7 @@ const MainCourseProfile = () => {
         <p className="text-center pt-10">موردی یافت نشد.</p>
       ) : (
         <>
+          {/* <Countdown targetDate={course?.latest_term?.enroll_finish_date} /> */}
           <div className="w-full bg-linear-to-l from-purple-50 to-purple-200 pt-4 pb-10">
             <div className="px-5 flex justify-end">
               <button
@@ -46,6 +52,21 @@ const MainCourseProfile = () => {
                 تالار پرسش و پاسخ این دوره، محیطی را برای رفع ابهامات و تعامل با
                 مدرس و دیگر دانشجویان فراهم می‌کند.
               </p>
+              {/* امتیاز */}
+              {course?.rating_score ? (
+                <p className="text-sm text-secondary-600">
+                  مجموع امتیازات دوره{" "}
+                  <span className="text-secondary-800 font-semibold">
+                    {Number.isInteger(course?.rating_score)
+                      ? course?.rating_score
+                      : course?.rating_score?.toFixed(2)}
+                  </span>
+                </p>
+              ) : (
+                <p className="text-sm text-secondary-600">
+                  برای این دوره امتیازی ثبت نشده
+                </p>
+              )}
             </div>
           </div>
           <div className="w-full bg-white py-10">
@@ -103,6 +124,10 @@ const MainCourseProfile = () => {
                   </p>
                   {/* <Link to={"/courses?search=data"}>data</Link> */}
                 </div>
+                {/* ثبت امتیاز */}
+                {user?.firstname && isEnroll && (
+                  <MainRating courseName={course?.name} />
+                )}
                 {/* دیدگاه */}
                 <MainCommentList
                   user={user}
