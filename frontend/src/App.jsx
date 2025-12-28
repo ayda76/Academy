@@ -17,6 +17,12 @@ import AppLayout from "./layout/AppLayout";
 import EditUserPage from "./pages/dashboard/EditUserPage";
 import MyCoursePage from "./pages/dashboard/MyCoursePage";
 import MyCourseDetailsPage from "./pages/dashboard/MyCourseDetailsPage";
+import AdminPage from "./pages/admin/AdminPage";
+import ProtectedRoute from "./ui/ProtectedRoute";
+import MainOrganizationList from "./components/admin/organizations/list/MainOrganizationList";
+import OrganizationPage from "./pages/admin/OrganizationPage";
+import MainCreateOrg from "./components/admin/organizations/create/MainCreateOrg";
+import MainEditOrg from "./components/admin/organizations/create/MainEditOrg";
 // import { useEffect } from "react";
 // import Cookies from "js-cookie";
 // import api, { setAccessToken } from "./services/api";
@@ -76,6 +82,23 @@ function App() {
           <Route path="change-password" element={<ChangePasswordPage />} />
           <Route path="course" element={<MyCoursePage />}>
             <Route path=":id" element={<MyCourseDetailsPage />} />
+          </Route>
+        </Route>
+        {/* admin route */}
+        <Route
+          path="admin"
+          element={
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="organization/list" replace />} />
+          <Route path="organization" element={<OrganizationPage />}>
+            <Route index element={<Navigate to="list" replace />} />
+            <Route path="list" element={<MainOrganizationList />} />
+            <Route path="create" element={<MainCreateOrg />} />
+            <Route path="edit/:id" element={<MainEditOrg />} />
           </Route>
         </Route>
         {/* public routes */}
