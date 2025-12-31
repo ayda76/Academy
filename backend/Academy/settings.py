@@ -66,6 +66,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Application definition
 
 INSTALLED_APPS = [
+   
     'django.contrib.admin',
     
     'django.contrib.auth',
@@ -103,6 +104,7 @@ INSTALLED_APPS = [
     # 'notification_app'
 ]
 MIDDLEWARE = [
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -111,7 +113,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',  
     'django_prometheus.middleware.PrometheusAfterMiddleware',
     'Academy.middleware.RequestMiddleware',
 ]

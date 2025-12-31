@@ -25,6 +25,11 @@ from comment_app.api.serializers import *
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError, NotFound
 from django.db.models import Avg
+from course_app.metrics import (
+    register_requests_total,
+    register_duration_seconds,
+)
+
 
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.prefetch_related('courses_organization').all()
@@ -123,29 +128,30 @@ class Enroll(CreateAPIView):
     serializer_class=EnrollTermSerializer
     my_tags = ["Course"]
     def post(self, request):
+        register_requests_total.inc()
         profileSelected = Profile.get_user_jwt(self , self.request)
         serializer = self.get_serializer(data=request.data)
         
         if serializer.is_valid():
             term_id = serializer.validated_data['term_id']
-            
-        with transaction.atomic():    
-            termSelected=Term.objects.select_for_update().get(id=term_id)
-            if termSelected.has_capacity ==True and termSelected.valid_enroll_time ==True and profileSelected not in termSelected.students.all():
+        with register_duration_seconds.time():    
+            with transaction.atomic():    
+                termSelected=Term.objects.select_for_update().get(id=term_id)
+                if termSelected.has_capacity ==True and termSelected.valid_enroll_time ==True and profileSelected not in termSelected.students.all():
                 
-                termSelected.students.add(profileSelected)
-                transaction.on_commit(partial(send_confirmation_email_enroll.delay,course_name=termSelected.course_related.name,term_start=termSelected.start_date,user_email=profileSelected.email))
-                Variable, Created =ProfileDetail.objects.update_or_create(profile_related=profileSelected)
-                Variable.all_course.add(termSelected.course_related)
-                Variable.save()
-                # transaction.on_commit(
-                # lambda: send_confirmation_email_enroll.delay(
-                #  course_id=termSelected.course_related.id,
-                # user_email=self.request.user.email
-                # )
-                #)
-                # send_confirmation_email_enroll.delay(termSelected.course_related.id,self.request.user.email)
-                return Response('submited successfully')
-            raise ValidationError({"detail": "failed to submit.(issues you should consider:capacity,enroll date,enrolled before)"})
+                    termSelected.students.add(profileSelected)
+                    transaction.on_commit(partial(send_confirmation_email_enroll.delay,course_name=termSelected.course_related.name,term_start=termSelected.start_date,user_email=profileSelected.email))
+                    Variable, Created =ProfileDetail.objects.update_or_create(profile_related=profileSelected)
+                    Variable.all_course.add(termSelected.course_related)
+                    Variable.save()
+                    # transaction.on_commit(
+                    # lambda: send_confirmation_email_enroll.delay(
+                    #  course_id=termSelected.course_related.id,
+                    # user_email=self.request.user.email
+                    # )
+                    #)
+                    # send_confirmation_email_enroll.delay(termSelected.course_related.id,self.request.user.email)
+                    return Response('submited successfully')
+                raise ValidationError({"detail": "failed to submit.(issues you should consider:capacity,enroll date,enrolled before)"})
         
         

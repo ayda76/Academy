@@ -71,6 +71,7 @@ persiantools==4.2.0
 phonenumbers==9.0.15
 Pillow==10.1.0
 prometheus_client==0.21.0
+
 prompt-toolkit==3.0.43
 psycopg2-binary==2.9.9
 pycparser==2.21
