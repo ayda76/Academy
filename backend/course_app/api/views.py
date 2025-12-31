@@ -114,6 +114,7 @@ class BuyCourse(CreateAPIView):
             list_courseIds=course_ids.split(',')
             list_ids=[]
             [list_ids.append(Course.objects.get(id=int(cr_id))) for cr_id in list_courseIds]
+            list_ids
         with transaction.atomic(): 
             Variable, Created =ProfileDetail.objects.update_or_create(profile_related=profileSelected)
             [Variable.all_course.add(id_course) for id_course in list_ids]

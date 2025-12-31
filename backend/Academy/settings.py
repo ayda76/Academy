@@ -101,7 +101,7 @@ INSTALLED_APPS = [
     'profile_app',
     'course_app',
     'comment_app',
-    # 'notification_app'
+    'notification_app'
 ]
 MIDDLEWARE = [
 
@@ -303,3 +303,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'vfayda97@gmail.com'
 EMAIL_HOST_PASSWORD = 'dekn qjfs movk aojv'
+
+
+
+RABBITMQ_HOST = "rabbitmq"
+RABBITMQ_USER = "admin"
+RABBITMQ_PASS = "admin"
+RABBITMQ_EXCHANGE = "orders"
