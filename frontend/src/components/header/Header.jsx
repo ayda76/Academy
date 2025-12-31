@@ -8,7 +8,7 @@ import {
   PiUser,
   PiUserCircle,
 } from "react-icons/pi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalSideBar from "../../ui/ModalSideBar";
 import ConfirmSignOut from "../../ui/ConfirmSignOut";
 import { useCart } from "../../context/CartContext";
@@ -17,9 +17,24 @@ const Header = () => {
   const { user, isLoadingUser } = useUser();
   const [open, setOpen] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <header
-      className={`${isLoadingUser && "blur-sm"} sticky z-40 inset-0 p-2.5 md:px-6 shadow-md flex items-center justify-between bg-secondary-50`}
+      className={`${isLoadingUser && "blur-sm"} sticky z-40 inset-0 p-2.5 md:px-6 shadow-md flex items-center justify-between ${scrolled?"bg-secondary-200/60 backdrop-blur-md":"bg-secondary-50"}`}
     >
       <PiList className="flex md:hidden" onClick={() => setOpen(true)} />
       <Link to="/" className="text-purple-800 font-semibold">
