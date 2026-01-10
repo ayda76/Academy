@@ -19,11 +19,6 @@ const MainAdminSideBar = ({ onClose }) => {
           // icon={<PiUser />}
         />
         <NavLink
-          path={"/admin/term"}
-          title={"ترم‌ها"}
-          // icon={<PiBooksLight />}
-        />
-        <NavLink
           path={"/admin/lessons"}
           title={"درس‌ها"}
           // icon={<PiBooksLight />}
@@ -32,6 +27,11 @@ const MainAdminSideBar = ({ onClose }) => {
           path={"/admin/courses"}
           title={"دوره‌ها"}
           // icon={<PiPassword />}
+        />
+        <NavLink
+          path={"/admin/term"}
+          title={"ترم‌ها"}
+          // icon={<PiBooksLight />}
         />
       </ul>
     </div>

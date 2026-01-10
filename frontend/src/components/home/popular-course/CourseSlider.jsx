@@ -14,8 +14,6 @@ export default function CourseSlider() {
 
   const swiperRef = useRef(null);
 
-  if (isLoading) return null;
-
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-6">
@@ -52,7 +50,7 @@ export default function CourseSlider() {
           ? Array.from({ length: 3 })?.map((arr, index) => (
               <SwiperSlide
                 key={index}
-                className="max-w-[250px]! mx-2 rounded-xl"
+                className="max-w-[250px]! bg-white mx-2 rounded-xl"
               >
                 <CourseCardLoading />
               </SwiperSlide>
