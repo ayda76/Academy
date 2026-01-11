@@ -28,7 +28,7 @@ const MainCreateOrg = ({ orgData = {} }) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-[400px]">
-      <h4>ایجاد سازمان</h4>
+      <h4>{orgData?.id ? "ویرایش" : "ایجاد"} سازمان</h4>
       <TextField
         label={"نام"}
         name={"name"}
