@@ -23,3 +23,7 @@ export async function enrollOfflineCourseApi(formData) {
 export async function popularCourseApi() {
   return api.get("/api/course/course/PopularCourses/").then((res) => res?.data);
 }
+
+export async function createCourseApi(formData) {
+  return api.post("/api/course/course/", formData).then((res) => res?.data);
+}
