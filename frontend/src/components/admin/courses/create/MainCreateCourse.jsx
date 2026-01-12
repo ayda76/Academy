@@ -1,10 +1,12 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import TextField from "../../../../ui/TextField";
 import useGetOrganization from "../../../../hooks/organization/useGetOrganization";
 import SelectField from "../../../../ui/SelectField";
-import useGetLesson from "../../../../hooks/lesson/useGetLesson";
+// import useGetLesson from "../../../../hooks/lesson/useGetLesson";
 import SubmitButton from "../../../../ui/SubmitButton";
 import useCreateCourse from "../../../../hooks/courses/useCreateCourse";
+import { useState } from "react";
+import LessonSelectedButton from "./LessonSelectedButton";
 
 const MainCreateCourse = ({ course = {} }) => {
   const {
@@ -13,6 +15,9 @@ const MainCreateCourse = ({ course = {} }) => {
     handleSubmit,
     control,
   } = useForm({
+    defaultValues: {
+      lessons_related: [],
+    },
     mode: "onChange",
   });
 
@@ -21,19 +26,19 @@ const MainCreateCourse = ({ course = {} }) => {
   const onSubmit = (data) => {
     console.log(data);
     if (course?.id) {
-      console.log("j");
+      console.log("edit");
     } else {
       creatCourseFn(data);
     }
   };
 
   const { organization, isLoadingOrg } = useGetOrganization();
-  const { lessons, isLoadingLessons } = useGetLesson();
+  // const { lessons, isLoadingLessons } = useGetLesson();
   const typeList = [
     { value: false, label: "آفلاین" },
     { value: true, label: "آنلاین" },
   ];
-
+  const [show, setShow] = useState(true);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-[400px]">
       <h4>{course?.id ? "ویرایش" : "ایجاد"} دوره</h4>
@@ -64,7 +69,7 @@ const MainCreateCourse = ({ course = {} }) => {
           };
         })}
       />
-      <SelectField
+      {/* <SelectField
         label={"درس‌ها"}
         name={"lessons_related"}
         errors={errors}
@@ -81,6 +86,22 @@ const MainCreateCourse = ({ course = {} }) => {
         })}
         multiple={true}
         isLoading={isLoadingLessons}
+      /> */}
+      <Controller
+        name={"lessons_related"}
+        control={control}
+        rules={{ required: "این فیلد الزامی است." }}
+        render={({ field }) => (
+          <LessonSelectedButton
+            label={"درس‌ها"}
+            name={"lessons_related"}
+            errors={errors}
+            value={field?.value}
+            onChange={field.onChange}
+            onClose={() => setShow(false)}
+            required
+          />
+        )}
       />
       <TextField
         label={"قیمت"}
