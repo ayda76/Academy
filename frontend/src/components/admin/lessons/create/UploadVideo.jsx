@@ -11,16 +11,18 @@ export const UploadVideo = ({ video, setVideo }) => {
   const handleUploadFile = async (e) => {
     const file = e.target.files[0];
     ref.current.value = null;
-    const formData = {
-      file_doc: file,
-    };
-    uploadFileFn(formData, {
-      onSuccess: (data) => {
-        setVideo(data);
-        console.log(data);
-      },
-    });
+    setVideo(file);
+    // const formData = {
+    //   file_doc: file,
+    // };
+    // uploadFileFn(formData, {
+    //   onSuccess: (data) => {
+    //     setVideo(data);
+    //     console.log(data);
+    //   },
+    // });
   };
+  // console.log(video);
   return (
     <div>
       <input
@@ -50,15 +52,20 @@ export const UploadVideo = ({ video, setVideo }) => {
         ) : (
           video && (
             <div className="flex items-center justify-between">
-              <p className="text-xs">{video?.file_doc?.split("/").at(-1)}</p>
+              <p className="text-xs">
+                {video?.file_doc
+                  ? video?.file_doc?.split("/").at(-1)
+                  : video?.split("/").at(-1)}
+              </p>
               <button
                 className="cursor-pointer disabled:cursor-not-allowed"
                 onClick={() =>
-                  deleteFileFn(video?.id, {
-                    onSuccess: () => {
-                      setVideo(null);
-                    },
-                  })
+                  // deleteFileFn(video?.id, {
+                  //   onSuccess: () => {
+                  //     setVideo(null);
+                  //   },
+                  // })
+                  setVideo(null)
                 }
                 disabled={isDeleting}
               >
