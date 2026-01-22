@@ -24,11 +24,16 @@ const MainCreateCourse = ({ course = {} }) => {
   const { creatCourseFn, isCreating } = useCreateCourse();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const formData = {
+      ...data,
+      organization: +data?.organization,
+      is_online: data?.is_online == "false" ? false : true,
+    };
+    console.log(formData);
     if (course?.id) {
       console.log("edit");
     } else {
-      creatCourseFn(data);
+      creatCourseFn(formData);
     }
   };
 
