@@ -1,22 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteLessonApi } from "../../services/lessonsService";
 import toast from "react-hot-toast";
-import { deleteOrgApi } from "../../services/organizationServices";
 
-export default function useDeleteOrg() {
+export default function useDeleteLesson() {
   const queryClient = useQueryClient();
-  const { mutate: deleteOrgFn, isPending } = useMutation({
-    mutationFn: deleteOrgApi,
+
+  const { mutate: DeleteLessonFn, isPending } = useMutation({
+    mutationFn: deleteLessonApi,
     onSuccess: () => {
-      toast.error("باموفقیت حذف شد.");
       queryClient.invalidateQueries({
-        queryKey: ["get-organization"],
+        queryKey: ["lessons"],
       });
+      toast.error("باموفقیت حذف شد.");
     },
     onError: (err) => {
       console.log(err);
       toast.error(err?.response?.data?.detail || "مشکلی زخ داده است.");
     },
   });
-
-  return { deleteOrgFn, isPending };
+  return { DeleteLessonFn, isPending };
 }
