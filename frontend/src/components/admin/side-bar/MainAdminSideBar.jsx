@@ -14,22 +14,22 @@ const MainAdminSideBar = ({ onClose }) => {
     >
       <ul className="flex flex-col gap-5 md:p-4">
         <NavLink
-          path={"/admin/organization"}
+          path={"/admin/organization/list"}
           title={"سازمان‌ها"}
           // icon={<PiUser />}
         />
         <NavLink
-          path={"/admin/lessons"}
+          path={"/admin/lessons/list"}
           title={"درس‌ها"}
           // icon={<PiBooksLight />}
         />
         <NavLink
-          path={"/admin/courses"}
+          path={"/admin/courses/list"}
           title={"دوره‌ها"}
           // icon={<PiPassword />}
         />
         <NavLink
-          path={"/admin/term"}
+          path={"/admin/term/list"}
           title={"ترم‌ها"}
           // icon={<PiBooksLight />}
         />
