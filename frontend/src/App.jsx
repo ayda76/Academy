@@ -29,6 +29,7 @@ import MainCreateLesson from "./components/admin/lessons/create/MainCreateLesson
 import { AdminCoursesPage } from "./pages/admin/AdminCoursesPage";
 import MainAdminCoursesList from "./components/admin/courses/list/MainAdminCoursesList";
 import MainCreateCourse from "./components/admin/courses/create/MainCreateCourse";
+import MainEditLesson from "./components/admin/lessons/create/MainEditLesson";
 // import { useEffect } from "react";
 // import Cookies from "js-cookie";
 // import api, { setAccessToken } from "./services/api";
@@ -110,7 +111,7 @@ function App() {
             <Route index element={<Navigate to="list" replace />} />
             <Route path="list" element={<MainLessonsList />} />
             <Route path="create" element={<MainCreateLesson />} />
-            <Route path="edit/:id" element={<MainEditOrg />} />
+            <Route path="edit/:id" element={<MainEditLesson />} />
           </Route>
           <Route path="courses" element={<AdminCoursesPage />}>
             <Route index element={<Navigate to="list" replace />} />
