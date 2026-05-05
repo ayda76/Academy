@@ -10,6 +10,7 @@ const MainAdminCoursesList = () => {
   const [params, setParams] = useState({ page });
   const { coursesList, isLoadingCourses, isFetching } = useGetCourses(params);
   const courses = coursesList?.results;
+  console.log(courses);
   const npage = Math.ceil(coursesList?.count / 3);
   return (
     <div className="flex flex-col gap-y-8">

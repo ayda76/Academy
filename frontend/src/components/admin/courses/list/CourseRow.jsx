@@ -1,8 +1,10 @@
 import { PiPencilDuotone, PiTrashDuotone } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import priceType from "../../../../utils/priceType";
+import useDeleteCourse from "../../../../hooks/courses/useDeleteCourse";
 
 const CourseRow = ({ course }) => {
+  const { deleteFn, isPending } = useDeleteCourse();
   return (
     <tr>
       <td>{course?.name}</td>
@@ -16,8 +18,8 @@ const CourseRow = ({ course }) => {
           </Link>
           <button
             className="cursor-pointer disabled:cursor-not-allowed"
-            // onClick={() => deleteOrgFn(org?.id)}
-            // disabled={isPending}
+            onClick={() => deleteFn(course?.id)}
+            disabled={isPending}
           >
             <PiTrashDuotone className="text-lg" />
           </button>

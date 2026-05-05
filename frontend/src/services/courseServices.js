@@ -27,3 +27,7 @@ export async function popularCourseApi() {
 export async function createCourseApi(formData) {
   return api.post("/api/course/course/", formData).then((res) => res?.data);
 }
+
+export async function deleteCourseApi(id) {
+  return api.delete(`/api/course/course/${id}/`).then((res) => res?.data);
+}
