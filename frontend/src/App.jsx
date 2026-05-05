@@ -30,6 +30,7 @@ import { AdminCoursesPage } from "./pages/admin/AdminCoursesPage";
 import MainAdminCoursesList from "./components/admin/courses/list/MainAdminCoursesList";
 import MainCreateCourse from "./components/admin/courses/create/MainCreateCourse";
 import MainEditLesson from "./components/admin/lessons/create/MainEditLesson";
+import MainEditCourse from "./components/admin/courses/create/MainEditCourse";
 // import { useEffect } from "react";
 // import Cookies from "js-cookie";
 // import api, { setAccessToken } from "./services/api";
@@ -117,7 +118,7 @@ function App() {
             <Route index element={<Navigate to="list" replace />} />
             <Route path="list" element={<MainAdminCoursesList />} />
             <Route path="create" element={<MainCreateCourse />} />
-            <Route path="edit/:id" element={<MainEditOrg />} />
+            <Route path="edit/:id" element={<MainEditCourse />} />
           </Route>
         </Route>
         {/* public routes */}
