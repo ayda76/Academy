@@ -9,6 +9,10 @@ import { useState } from "react";
 import LessonSelectedButton from "./LessonSelectedButton";
 
 const MainCreateCourse = ({ course = {} }) => {
+  console.log(course);
+  const existLesson = course?.id
+    ? course?.lessons_related?.map((lesson) => lesson?.id)
+    : [];
   const {
     register,
     formState: { errors },
@@ -16,7 +20,11 @@ const MainCreateCourse = ({ course = {} }) => {
     control,
   } = useForm({
     defaultValues: {
-      lessons_related: [],
+      name: course?.name || null,
+      lessons_related: existLesson,
+      organization: course?.organization?.id || null,
+      price: +course?.price || null,
+      is_online: course?.is_online || false,
     },
     mode: "onChange",
   });
@@ -24,16 +32,11 @@ const MainCreateCourse = ({ course = {} }) => {
   const { creatCourseFn, isCreating } = useCreateCourse();
 
   const onSubmit = (data) => {
-    const formData = {
-      ...data,
-      organization: +data?.organization,
-      is_online: data?.is_online == "false" ? false : true,
-    };
-    console.log(formData);
+    console.log(data);
     if (course?.id) {
       console.log("edit");
     } else {
-      creatCourseFn(formData);
+      creatCourseFn(data);
     }
   };
 
