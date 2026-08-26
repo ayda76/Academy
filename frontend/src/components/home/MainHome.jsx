@@ -6,13 +6,13 @@ import MainPopularCourse from "./popular-course/MainPopularCourse";
 
 const MainHome = () => {
   return (
-    <div className="space-y-8">
+    <>
       <Hero />
       <MainPopularCourse />
       <MainCertification />
       <MainFeatures />
       <Footer />
-    </div>
+    </>
   );
 };
 
