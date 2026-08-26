@@ -17,7 +17,7 @@ const MainCommentList = ({ courseName, user }) => {
   // const isEnroll = user?.firstname && course?.some((c) => c?.id === courseId);
   const [openCm, setOpenCm] = useState(false);
   return (
-    <div className="space-y-4 w-full md:w-[80%]">
+    <div className="space-y-4 w-full">
       {openCm && (
         <Modal
           onClose={() => setOpenCm(false)}

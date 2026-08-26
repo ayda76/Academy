@@ -7,7 +7,7 @@ const CourseDetailsCard = ({ course }) => {
     <div className="fixed bottom-0 right-0 left-0 flex flex-row-reverse justify-between lg:block lg:col-span-1 lg:sticky lg:space-y-4 lg:top-24 h-fit lg:-mt-72 p-5 border border-secondary-200 bg-secondary-50 lg:rounded-xl shadow">
       <div className="w-full hidden lg:block aspect-9/5 overflow-hidden rounded-md bg-gray-100">
         <img
-          src={course?.image || "/assets/images/course/not-found.jpg"}
+          src={course?.image || "/assets/images/course/not-found2.png"}
           alt={course?.name}
           className="w-full h-full object-cover"
         />

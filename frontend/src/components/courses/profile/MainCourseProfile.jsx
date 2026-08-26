@@ -38,11 +38,11 @@ const MainCourseProfile = () => {
               </button>
             </div>
             <div className="container space-y-5 mx-auto p-4">
-              <div className="w-[250px] h-[150px] lg:hidden rounded-md bg-gray-100 mx-auto">
+              <div className="max-w-[350px] aspect-9/5 lg:hidden rounded-md bg-gray-100 mx-auto">
                 <img
-                  src={course?.image || "/assets/images/course/not-found.jpg"}
+                  src={course?.image || "/assets/images/course/not-found2.png"}
                   alt={course?.name}
-                  className="w-[250px] h-[150px] rounded-md object-cover"
+                  className="w-full h-full rounded-md object-cover"
                 />
               </div>
               <h1 className="text-2xl font-bold">عنوان دوره {course?.name}</h1>
