@@ -59,7 +59,7 @@
   --color-red-300: rgb(252, 165, 165);
 }
 
-body {
+html {
   @apply font-dana;
   direction: rtl;
   scroll-behavior: smooth;

@@ -31,49 +31,13 @@ import MainAdminCoursesList from "./components/admin/courses/list/MainAdminCours
 import MainCreateCourse from "./components/admin/courses/create/MainCreateCourse";
 import MainEditLesson from "./components/admin/lessons/create/MainEditLesson";
 import MainEditCourse from "./components/admin/courses/create/MainEditCourse";
-// import { useEffect } from "react";
-// import Cookies from "js-cookie";
-// import api, { setAccessToken } from "./services/api";
-// import { useCart } from "./context/CartContext";
+import ScrollToTop from "./components/scroll-to-top/ScrollToTop";
 
 function App() {
-  // const queryClient = new QueryClient();
-  // const _appSignging = localStorage.getItem("_appSignging");
-  // const refresh = Cookies.get("refresh");
-  // const { dispatch, test } = useCart();
-  // useEffect(() => {
-  //   const getToken = async () => {
-  //     console.log(refresh);
-  //     if (!refresh) {
-  //       Cookies.remove("refresh");
-  //       localStorage.removeItem("_appSignging");
-  //       setAccessToken(null);
-  //       console.log("no refresh");
-  //       return;
-  //     }
-  //     try {
-  //       const refreshResponse = await api.post(`/auth/jwt/refresh/`, {
-  //         refresh: refresh,
-  //       });
-  //       console.log("44", refreshResponse);
-  //       setAccessToken(refreshResponse.data.access);
-  //       localStorage.setItem("_appSignging", true);
-  //       dispatch({ type: "setTest", payload: refreshResponse.data.access });
-  //     } catch (err) {
-  //       console.log(err);
-  //       Cookies.remove("refresh");
-  //       localStorage.removeItem("_appSignging");
-  //       setAccessToken(null);
-  //       return Promise.reject(err);
-  //     }
-  //   };
-  //   getToken();
-  //   console.log("refresh app");
-  // }, [refresh, _appSignging]);
-  // console.log(test);
   return (
     <>
       <Toaster />
+      <ScrollToTop />
       <Routes>
         {/* auth route */}
         <Route path="/auth" element={<AuthLayout />}>
